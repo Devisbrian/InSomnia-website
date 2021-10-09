@@ -1,0 +1,19 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    Listado de versiones photocards
+{% endblock %}
+
+{% block content %}
+    <div>
+        <a href="{{ url_for('admin.albumtype_add') }}">Añadir categoría</a>
+    </div>
+    <h2>Listado de versiones de photocards</h2>
+    <ul>
+    {% for album_types in album_type %}
+        <li>
+            <a href="{{ url_for('admin.update_albumtype_form', album_type_id=album_types.id) }}">{{ album_types.pc_type }}</a>
+        </li>
+    {% endfor %}
+    </ul>
+{% endblock %}

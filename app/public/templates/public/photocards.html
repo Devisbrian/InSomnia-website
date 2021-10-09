@@ -1,0 +1,59 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    Listado de photocards
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 style="color:white;">Listado de photocards</h1>
+    {% if current_user.is_admin %}
+        <a href="{{ url_for('admin.photocarddb_add') }}">
+            <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+              </svg>
+        </a>
+    {% endif %}
+    <hr class="my-5">
+    
+
+
+    {% for album in albums %}
+    <h2 style="color:#f2c763;">{{ album.album }}</h2>
+    <div style="width:100% !important;" class="container">
+        
+        {% for pc_type in pc_types %}
+        {% if pc_type.album == album.album%}
+
+            {% if pc_type.pc_type != "FAITM" %}
+                {% if pc_type.pc_type != "Nightmare" %}
+                    <h5>{{ pc_type.pc_type }}</h5>
+                {% endif %}
+            {% endif %}
+
+        <div class="row">
+            {% for photocard in photocards %}
+            {% if photocard.pc_type == pc_type.pc_type %}
+          <div class="col">
+                {% if current_user.is_admin %}
+                <a href="{{ url_for('admin.update_photocard_form', pc_id=photocard.id) }}">
+                {% endif %}
+                    <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                
+                </a>
+
+                    <p>{{ photocard.member }}</p>
+          </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+    </div>
+    <hr class="my-1">
+    {% endfor %}
+    
+
+</div>
+{% endblock %}

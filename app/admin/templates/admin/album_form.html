@@ -1,0 +1,45 @@
+ {% extends "base_template.html" %}
+
+{% block title %}
+    {% if form.album.data %}
+        {{ form.album.data }}
+    {% else %}
+        Nuevo álbum
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="sesion">
+<div class="container">
+    <h1>Agregar un álbum</h1>
+<hr>
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.album.label(class="labe") }}
+            {{ form.album(class="formu") }}<br>
+            {% for error in form.album.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.album_image.label(class="labe") }}
+            {{ form.album_image(class="form-control form-control-lg") }}<br>
+            {% for error in form.album_image.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.submit(class="btnsb") }}
+        </div>
+    </form>
+    
+    {% if album %}
+    <form action="{{ url_for('admin.delete_album', album_id=album.id) }}" method="post" novalidate>
+        <input type="submit" value="Eliminar" />
+    </form>
+    {% endif %}
+</div>
+</div>
+{% endblock %}
+

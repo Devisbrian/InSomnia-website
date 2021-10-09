@@ -1,0 +1,38 @@
+{% extends "base_template.html" %}
+
+{% block title %}Login{% endblock %}
+
+{% block content %}
+<div class="sesion">
+    <div class="container">
+        <form action="" method="post" novalidate>
+            {{ form.hidden_tag() }}
+          
+            <div class="imgcontainer">
+                <img src="{{ url_for("static", filename="img/logo.png") }}" alt="Avatar" class="avatar">
+            </div>
+            
+            
+                {{ form.username.label(class="labe") }}<br>
+                {{ form.username(class="formu") }}<br>
+                {% for error in form.username.errors %}
+                <span style="color: #f2c763;">{{ error }}</span><br>
+                {% endfor %}
+                
+                {{ form.password.label(class="labe") }}<br>
+                {{ form.password(class="formu") }}<br>
+                {% for error in form.password.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            
+            
+            {{ form.remember_me() }} {{ form.remember_me.label }}
+            
+            <p>
+                {{ form.submit(class="btnsb") }}
+          
+        </form>
+            <div>¿No tienes cuenta? <a href="{{ url_for('auth.show_signup_form') }}">Regístrate</a></div>
+    </div>
+</div>
+{% endblock %}

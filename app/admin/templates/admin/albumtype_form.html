@@ -1,0 +1,38 @@
+ {% extends "base_template.html" %}
+
+{% block title %}
+    {% if form.pc_type.data %}
+        {{ form.pc_type.data }}
+    {% else %}
+        Nueva categoría photocard
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.album.label }}
+            {{ form.album }}<br>
+            {% for error in form.album.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.pc_type.label }}
+            {{ form.pc_type }}<br>
+            {% for error in form.pc_type.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.submit() }}
+        </div>
+    </form>
+    
+    {% if album_type %}
+    <form action="{{ url_for('admin.delete_albumtype', album_type_id=album_type.id) }}" method="post" novalidate>
+        <input type="submit" value="Eliminar" />
+    </form>
+    {% endif %}
+{% endblock %}

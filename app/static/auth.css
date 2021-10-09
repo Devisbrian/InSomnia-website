@@ -1,0 +1,131 @@
+* {
+  box-sizing: border-box;
+}
+
+.row {
+  display:inline-block;
+  vertical-align: middle;
+  float: none;
+}
+
+/* Create two equal columns that floats next to each other */
+.column {
+  float: left;
+  max-width: 400px;
+  padding: 2px;
+}
+
+/* Clear floats after the columns */
+.row:after {
+  text-align: center;
+  content: "";
+  display: table;
+  clear: both;
+}
+
+
+.labe {
+  text-align: center;
+}
+
+/* Full-width inputs */
+.formu {
+  text-align: center;
+  background-color: #d6d6d6;
+  width: 100%;
+  padding: 12px 18px;
+  margin: 8px 0px;
+  display: inline-block;
+  border-radius: 0.5em;
+  border: 1.5px solid #ccc;
+}
+
+/* Set a style for all buttons */
+.btnsb {
+  background-color: #8a2a2b;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: 1.5px solid #ccc;
+  border-radius: 0.5em;
+  cursor: pointer;
+  width: 350px;
+}
+
+/* Add a hover effect for buttons */
+button:hover {
+  opacity: 0.8;
+}
+
+/* Extra style for the cancel button (red) */
+.cancelbtn {
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the avatar image inside this container */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+}
+
+/* Avatar image */
+img.avatar {
+  width: 15%;
+  border-radius: 20%;
+}
+
+/* Add padding to containers */
+.container {
+
+  color: white;
+  text-align: center;
+  padding: 16px;
+  width: 75% !important;
+  background-color:rgba(0, 0, 0, 0.7);
+  border-radius: 20px;
+}
+
+/* The "Forgot password" text */
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/* Change styles for span and cancel button on extra small screens */
+@media screen and (max-width: 600px) {
+  span.psw {
+    display: block;
+    float: none;
+  }
+  .cancelbtn {
+    width: 100%;
+  }
+  img.avatar {
+    width: 40%;
+  }
+  .container{
+    width:100% !important;
+  }
+  p.foot {
+    font-size: 17px;
+  }
+  svg.bi {
+    width: 23px;
+    height: 23px;
+  }
+  body {
+    background-image: url("backgroundm.png");
+    background-size: cover;
+  }
+}
+
+@media screen and (min-width: 601px) {
+  div.sesion .container {
+    width:45% !important;
+  }
+  div.sesion img.avatar {
+    width: 25.5%;
+  }
+}

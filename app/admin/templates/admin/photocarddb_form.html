@@ -1,0 +1,90 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    {% if form.pc_name.data %}
+        {{ form.pc_name.data }}
+    {% else %}
+        Nueva photocard
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+<div class="sesion">
+    <div class="container">
+
+        <h1>Agregar una photocard</h1>
+        <hr>
+
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.csrf_token }}
+        {{ form.hidden_tag() }}
+        <div>
+            {{ form.album.label(class="labe") }}
+            {{ form.album(class="formu") }}<br>
+            {% for error in form.album.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.member.label(class="labe") }}
+            {{ form.member(class="formu") }}<br>
+            {% for error in form.member.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.pc_type.label(class="labe") }}
+            {{ form.pc_type(class="formu") }}<br>
+            {% for error in form.pc_type.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.pc_name.label(class="labe") }}
+            {{ form.pc_name(class="formu") }}<br>
+            {% for error in form.pc_name.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.photocard_image.label(class="labe") }}
+            {{ form.photocard_image(class="form-control form-control-lg") }}<br>
+            {% for error in form.photocard_image.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.submit(class="btnsb") }}
+        </div>
+    </form>
+    {% if photocard %}
+    <form action="{{ url_for('admin.delete_photocard', photocard_id=photocard.id) }}" method="post" novalidate>
+        <input type="submit" value="Eliminar" />
+    </form>
+    {% endif %}
+
+</div>
+</div>
+    
+    <script>
+        let album_select = document.getElementById('album');
+        let pc_type_select = document.getElementById('pc_type');
+        
+        album_select.onchange = function() {
+            album = album_select.value;
+            
+            fetch('/pc_type/' + album).then(function(response) {
+                response.json().then(function(data) {
+                    let optionHTML = '';
+                    for (let pc_type of data.pc_types) {
+                        optionHTML += '<option value="' + pc_type.value + '">' + pc_type.name + '</option>';
+                    }
+                    
+                        pc_type_select.innerHTML = optionHTML;
+                });
+            });
+        }
+
+    </script>
+    
+{% endblock %}

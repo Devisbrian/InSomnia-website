@@ -1,0 +1,61 @@
+.note-editable { 
+  background-color: #101820 !important; color: white !important;
+}
+
+*li {
+  color: white;
+}
+
+body {
+   color: white;
+   margin: 0;
+   background-image: url("prueba.png");
+   background-size: cover;
+   background-repeat: no-repeat;
+   background-attachment: fixed;
+   font-family: Helvetica, Arial, sans-serif;
+   font-weight: bold;
+}
+
+/* NAVBAR */
+
+ul {
+  position: -webkit-sticky; /* Safari */
+  position: sticky;
+  top: 0;
+}
+
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, 400px);
+  gap: 20px;
+  justify-content: center;
+  
+  grid-template-rows: masonry;
+  margin: 0 auto;
+}
+
+.grid-item {
+  width: 300px;
+  margin-bottom: 40px;
+  border-radius: 20px;
+}
+
+.paginar {
+  font-size: 200%;
+  color: #f2c763;
+}
+
+span.comment-user {
+  font-size: 150%;
+}
+
+span.blogDate {
+  font-size: 60%;
+}
+
+img.photocards {
+  border-radius: 10px;
+  box-shadow: 2px 2px 3px #8a2a2b;
+}

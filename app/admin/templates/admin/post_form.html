@@ -1,0 +1,67 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    {% if form.title.data %}
+        {{ form.title.data }}
+    {% else %}
+        Nueva entrada
+    {% endif %}
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="container">
+
+  <h1 style="color:white;">Crear publicación</h1>
+
+  <hr class="my-5">
+
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+        
+            {{ form.title.label(class="labe") }}
+            {{ form.title(class="formu") }}<br>
+            {% for error in form.title.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+
+            {{ form.description.label(class="labe") }}
+            {{ form.description(class="formu") }}<br>
+            {% for error in form.description.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+
+            <div class="mb-3">
+              {{ form.post_image.label(class="labe") }}<br>
+              {{ form.post_image(class="form-control form-control-lg") }}<br>
+              {% for error in form.post_image.errors %}
+              <span style="color: red;">{{ error }}</span>
+              {% endfor %}
+            </div>
+
+            {{ form.content.label(class="labe") }}
+            {{ form.content(id="summernote") }}<br>
+            {% for error in form.content.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+            {{ form.submit(class="btnsb") }}
+    </form>
+  
+
+    {% if post %}
+      <form action="{{ url_for('admin.delete_post', post_id=post.id) }}" method="post" novalidate>
+          <input class="btnsb" type="submit" value="Eliminar" />
+      </form>
+    {% endif %}
+
+</div> 
+
+<script>
+  $('#summernote').summernote({
+    placeholder: 'Escribe algo...',
+    tabsize: 2,
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,17 @@
+ {% extends "base_template.html" %}
+
+{% block title %}{{ photocard.pc_name }}{% endblock %}
+
+{% block content %}
+    <h1>{{ photocard.pc_name }}</h1>
+
+    {% if photocard.pc_image_name %}
+        <div>
+            <img src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}" width="800" height="500"/>
+        </div>
+    {% endif %}
+    {{ photocard.album }}
+    {{ photocard.pc_type }}
+    {{ photocard.member }}
+
+{% endblock %}

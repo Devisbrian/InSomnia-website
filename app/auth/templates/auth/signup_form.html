@@ -1,0 +1,99 @@
+{% extends "base_template.html" %}
+
+{% block title %}Registro de usuarios{% endblock %}
+
+{% block content %}
+    {% if error %}
+        <p style="color: red;"><strong>Error:</strong> {{ error }}
+    {% endif %}
+
+    <form action="" method="post" novalidate>
+        {{ form.hidden_tag() }}
+
+<div style="width:75%;" class="container">        
+    <div class="imgcontainer">
+        <img src="{{ url_for("static", filename="img/logo.png") }}" alt="Avatar" class="avatar">
+    </div>
+    
+    
+
+   <div class="row g-3">
+    <div class="col-md-6">
+        {{ form.username.label(class="labe") }}<br>
+        {{ form.username(class="formu") }}<br>
+        {% for error in form.username.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.email.label(class="labe") }}<br>
+        {{ form.email(class="formu") }}<br>
+        {% for error in form.email.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.password.label(class="labe") }}<br>
+        {{ form.password(class="formu") }}<br>
+        {% for error in form.password.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.password_confirm.label(class="labe") }}<br>
+        {{ form.password_confirm(class="formu") }}<br>
+        {% for error in form.password_confirm.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.name.label(class="labe") }}<br>
+        {{ form.name(class="formu") }}<br>
+        {% for error in form.name.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.lastname.label(class="labe") }}<br>
+        {{ form.lastname(class="formu") }}<br>
+        {% for error in form.lastname.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.city.label(class="labe") }}<br>
+        {{ form.city(class="formu") }}<br>
+        {% for error in form.city.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.phone.label(class="labe") }}<br>
+        {{ form.phone(class="formu") }}<br>
+        {% for error in form.phone.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.birthday.label(class="labe") }}<br>
+        {{ form.birthday(class='datepicker formu') }}<br>
+        {% for error in form.birthday.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+    <div class="col-md-6">
+        {{ form.bias.label(class="labe") }}<br>
+        {{ form.bias(class="formu") }}<br>
+        {% for error in form.bias.errors %}
+        <span style="color: #f2c763;">{{ error }}</span>
+        {% endfor %}
+    </div>
+  </div>
+
+
+
+        {{ form.submit(class="btnsb") }}
+</div>
+ 
+    </form>
+{% endblock %}
