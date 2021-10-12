@@ -1,17 +1,17 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, TextAreaField, BooleanField
-from wtforms.validators import DataRequired, Length
+from wtforms.fields.html5 import DateField
+from wtforms.validators import DataRequired, Length, URL
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.core import SelectField
-from ..const import MEMBER_LIST, CATEGORIES
+from ..const import MEMBER_LIST
 
 class PostForm(FlaskForm):
     title = StringField('Título', validators=[DataRequired(), Length(max=128)])
     description = StringField('Encabezado', validators=[DataRequired()])
-    category = SelectField('Categoría', choices=CATEGORIES, validators=[DataRequired()])
     content = TextAreaField('Contenido')
     post_image = FileField('Imagen', validators=[
-        FileAllowed(['jpg', 'png'], 'Sólo se permiten imágenes')
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Sólo se permiten imágenes')
     ])
     submit = SubmitField('Enviar')
     
@@ -36,5 +36,10 @@ class AlbumTypeForm(FlaskForm):
     
 class AlbumForm(FlaskForm):
     album = StringField('Álbum', validators=[DataRequired()])
-    album_image = FileField('Imagen del álbum', validators=[FileAllowed(['jpg', 'png'],'Sólo se permiten imágenes JPG y PNG')])
+    date = DateField('Fecha de lanzamiento', format='%Y-%m-%d', validators=[DataRequired()])
+    songs = TextAreaField('Canciones')
+    producers = TextAreaField('Productores')
+    spotify = StringField('Link a Spotify', validators=[URL(require_tld=True)])
+    youtube = StringField('Link a Youtube', validators=[URL(require_tld=True)])
+    album_image = FileField('Imagen del álbum', validators=[FileAllowed(['jpg', 'png', 'jpeg'],'Sólo se permiten imágenes JPG y PNG')])
     submit = SubmitField('Guardar')

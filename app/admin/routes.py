@@ -29,7 +29,6 @@ def post_form():
     if form.validate_on_submit():
         title = form.title.data
         description = form.description.data
-        category = form.category.data
         content = form.content.data
         file = form.post_image.data
         image_name = None
@@ -40,7 +39,7 @@ def post_form():
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, image_name)
             file.save(file_path)
-        post = Post(user_id=current_user.id, title=title, description=description, category=category, content=content)
+        post = Post(user_id=current_user.id, title=title, description=description, content=content)
         post.image_name = image_name
         post.save()
         logger.info(f'Guardando nuevo post {title}')
@@ -64,7 +63,6 @@ def update_post_form(post_id):
         # Actualiza los campos del post existente
         post.title = form.title.data
         post.description = form.description.data
-        post.category = form.category.data
         post.content = form.content.data
         post.file = form.post_image.data
 
@@ -145,6 +143,11 @@ def album_add():
     form = AlbumForm()
     if form.validate_on_submit():
         album = form.album.data
+        date = form.date.data
+        songs = form.songs.data
+        producers = form.producers.data
+        spotify = form.spotify.data
+        youtube = form.youtube.data
         file = form.album_image.data
         album_image_name = None
         if file:
@@ -153,7 +156,7 @@ def album_add():
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, album_image_name)
             file.save(file_path)
-        albumdb = Album(album=album)
+        albumdb = Album(album=album, date=date, songs=songs, producers=producers, spotify=spotify, youtube=youtube)
         albumdb.album_image_name = album_image_name
         albumdb.save()
         logger.info(f'Guardando nuevo album {album}')
@@ -171,6 +174,11 @@ def update_album_form(album_id):
     form = AlbumForm(obj=album)
     if form.validate_on_submit():
         album.album = form.album.data
+        album.date = form.date.data
+        album.songs = form.songs.data
+        album.producers = form.producers.data
+        album.spotify = form.spotify.data
+        album.youtube = form.youtube.data
         album.file = form.album_image.data
         album.album_image_name = None
         if album.file:

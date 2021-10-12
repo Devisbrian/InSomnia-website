@@ -23,6 +23,41 @@
             {% endfor %}
         </div>
         <div>
+            {{ form.date.label(class="labe") }}
+            {{ form.date(class="formu") }}<br>
+            {% for error in form.date.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.songs.label(class="labe") }}
+            {{ form.songs(class="formu") }}<br>
+            {% for error in form.songs.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.producers.label(class="labe") }}
+            {{ form.producers(class="formu") }}<br>
+            {% for error in form.producers.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.spotify.label(class="labe") }}
+            {{ form.spotify(class="formu") }}<br>
+            {% for error in form.spotify.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
+            {{ form.youtube.label(class="labe") }}
+            {{ form.youtube(class="formu") }}<br>
+            {% for error in form.youtube.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>
+        <div>
             {{ form.album_image.label(class="labe") }}
             {{ form.album_image(class="form-control form-control-lg") }}<br>
             {% for error in form.album_image.errors %}
