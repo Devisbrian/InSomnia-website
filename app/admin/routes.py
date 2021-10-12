@@ -180,7 +180,6 @@ def update_album_form(album_id):
         album.spotify = form.spotify.data
         album.youtube = form.youtube.data
         album.file = form.album_image.data
-        album.album_image_name = None
         if album.file:
             album.album_image_name = secure_filename(album.file.filename)
             images_dir = current_app.config['ALBUMS_IMAGES_DIR']
@@ -189,7 +188,7 @@ def update_album_form(album_id):
             album.file.save(file_path)
         album.save()
         logger.info(f'Guardando el álbum {album_id}')
-        return redirect(url_for('public.list_album'))
+        return redirect(url_for('public.list_albums'))
     return render_template("admin/album_form.html", album=album, form=form)
 
 @admin_bp.route("/admin/album/delete/<int:album_id>/", methods=['POST', ])

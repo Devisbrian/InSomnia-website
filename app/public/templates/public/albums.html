@@ -29,8 +29,10 @@
                     <img class="bd-placeholder-img card-img-top" src="{{ url_for('media_albums', filename=album.album_image_name) }}" width="100%" height="100%" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </a>
                 <div class="card-body" style="color:black;">
-                    <h5 class="card-title">{{ album.album }}</h5>
-                    <p>{{ album.songs }}</p>
+                    <h4 class="card-title">{{ album.album }}</h4>
+                    <p>Lanzamiento: {{ album.date }}</p>
+                    <h6>Tracklist</h6>
+                    <p>{{ album.songs|safe }}</p> 
                 </div>
             </div>
         </div>

@@ -24,7 +24,7 @@
         </div>
         <div>
             {{ form.date.label(class="labe") }}
-            {{ form.date(class="formu") }}<br>
+            {{ form.date(class='datepicker formu') }}<br>
             {% for error in form.date.errors %}
             <span style="color: red;">{{ error }}</span>
             {% endfor %}

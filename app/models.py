@@ -98,7 +98,7 @@ class Album(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     album = db.Column(db.String(256), nullable=False)
     album_image_name = db.Column(db.String, nullable=False)
-    date = db.Column(db.DateTime)
+    date = db.Column(db.Date)
     songs = db.Column(db.Text)
     producers = db.Column(db.Text)
     spotify = db.Column(db.String)
