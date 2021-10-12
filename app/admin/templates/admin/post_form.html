@@ -8,7 +8,6 @@
     {% endif %}
 {% endblock %}
 
-
 {% block content %}
 
 
@@ -42,10 +41,12 @@
             </div>
 
             {{ form.content.label(class="labe") }}
-            {{ form.content(id="summernote") }}<br>
+            {{ form.content(id="RichText", style="color:#111021 !important;") }}<br>
             {% for error in form.content.errors %}
             <span style="color: red;">{{ error }}</span>
             {% endfor %}
+
+            
             {{ form.submit(class="btnsb") }}
     </form>
   
@@ -56,12 +57,19 @@
       </form>
     {% endif %}
 
-</div> 
+</div>
 
-<script>
-  $('#summernote').summernote({
-    placeholder: 'Escribe algo...',
-    tabsize: 2,
-  });
-</script>
+    <!-- RICH TEXT -->
+    <link rel="stylesheet" href="{{ url_for("static", filename="Rich/site.css") }}">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for("static", filename="Rich/richtext.min.css") }}">
+    <script type="text/javascript" src="{{ url_for("static", filename="Rich/jquery.richtext.js") }}"></script>
+
+    <script>
+      $(document).ready(function() {
+          $('#RichText').richText();
+      });
+      </script>
+
 {% endblock %}

@@ -193,7 +193,7 @@ def delete_album(album_id):
         abort(404)
     album.delete()
     logger.info(f'El album {album_id} ha sido eliminado')
-    return redirect(url_for('admin.list_album'))
+    return redirect(url_for('public.list_albums'))
 
 
 
@@ -279,7 +279,7 @@ def photocarddb_add():
         pc_db.pc_image_name = pc_image_name
         pc_db.save()
         logger.info(f'Guardando nueva photocard {pc_name}')
-        return redirect(url_for('admin.index'))
+        return redirect(url_for('public.list_photocards'))
     return render_template("admin/photocarddb_form.html", form=form)
 
 @admin_bp.route("/admin/photocard/<int:pc_id>", methods=['GET', 'POST'])
@@ -325,7 +325,7 @@ def delete_photocard(photocard_id):
         abort(404)
     photocard.delete()
     logger.info(f'La photocard {photocard_id} ha sido eliminada')
-    return redirect(url_for('admin.list_photocards'))
+    return redirect(url_for('public.list_photocards'))
 
 
 # FILTROS Jsonify
