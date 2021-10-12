@@ -13,6 +13,7 @@ class Post(db.Model):
     title = db.Column(db.String(256), nullable=False)
     title_slug = db.Column(db.String(256), unique=True, nullable=False)
     description = db.Column(db.Text)
+    category = db.Column(db.String(30))
     content = db.Column(db.Text)
     created = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc))
     image_name = db.Column(db.String)

@@ -29,6 +29,7 @@ def post_form():
     if form.validate_on_submit():
         title = form.title.data
         description = form.description.data
+        category = form.category.data
         content = form.content.data
         file = form.post_image.data
         image_name = None
@@ -39,7 +40,7 @@ def post_form():
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, image_name)
             file.save(file_path)
-        post = Post(user_id=current_user.id, title=title, description=description, content=content)
+        post = Post(user_id=current_user.id, title=title, description=description, category=category, content=content)
         post.image_name = image_name
         post.save()
         logger.info(f'Guardando nuevo post {title}')
@@ -63,6 +64,7 @@ def update_post_form(post_id):
         # Actualiza los campos del post existente
         post.title = form.title.data
         post.description = form.description.data
+        post.category = form.category.data
         post.content = form.content.data
         post.file = form.post_image.data
 

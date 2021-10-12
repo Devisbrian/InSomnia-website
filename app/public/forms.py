@@ -2,8 +2,7 @@ from flask_wtf import FlaskForm
 from wtforms import SubmitField, TextAreaField, StringField
 from wtforms.validators import DataRequired
 from wtforms.fields.core import SelectField
-
-MEMBER_LIST = [('','Seleccione'),('JiU','JiU'),('SuA','SuA'),('Siyeon','Siyeon'),('Handong','Handong'),('Yoohyeon','Yoohyeon'),('Dami','Dami'),('Gahyeon','Gahyeon')]
+from ..const import MEMBER_LIST
 
 class CommentForm(FlaskForm):
     content = TextAreaField('Contenido', validators=[DataRequired(), ])

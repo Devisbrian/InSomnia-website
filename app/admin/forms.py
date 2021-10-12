@@ -3,12 +3,12 @@ from wtforms import StringField, SubmitField, TextAreaField, BooleanField
 from wtforms.validators import DataRequired, Length
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.core import SelectField
-
-MEMBER_LIST = [('','Seleccione'),('JiU','JiU'),('SuA','SuA'),('Siyeon','Siyeon'),('Handong','Handong'),('Yoohyeon','Yoohyeon'),('Dami','Dami'),('Gahyeon','Gahyeon')]
+from ..const import MEMBER_LIST, CATEGORIES
 
 class PostForm(FlaskForm):
     title = StringField('Título', validators=[DataRequired(), Length(max=128)])
-    description = TextAreaField('Encabezado', validators=[DataRequired()])
+    description = StringField('Encabezado', validators=[DataRequired()])
+    category = SelectField('Categoría', choices=CATEGORIES, validators=[DataRequired()])
     content = TextAreaField('Contenido')
     post_image = FileField('Imagen', validators=[
         FileAllowed(['jpg', 'png'], 'Sólo se permiten imágenes')

@@ -32,6 +32,12 @@
             <span style="color: red;">{{ error }}</span>
             {% endfor %}
 
+            {{ form.category.label(class="labe") }}
+            {{ form.category(class="formu") }}<br>
+            {% for error in form.category.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+
             <div class="mb-3">
               {{ form.post_image.label(class="labe") }}<br>
               {{ form.post_image(class="form-control form-control-lg") }}<br>
