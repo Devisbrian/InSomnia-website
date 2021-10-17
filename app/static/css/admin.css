@@ -1,0 +1,113 @@
+/* INDEX */
+
+.admin-title {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.admin-container{
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+}
+
+.admin-item {
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 30px;
+    gap: 25px;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.admin-item h1 {
+    color:#101820;
+    text-align: center;
+}
+
+.admin-item svg {
+    color:#101820;
+    padding: 20px;
+}
+
+.admin-item a {
+    display:block;
+    margin:auto;
+}
+
+/* USERS */
+
+.user-title {
+    text-align: center;
+}
+
+.user-grid {
+    width:100%;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 140px);
+    gap: 20px;
+}
+
+.user-item {
+    background-color: rgba(70, 68, 68, 0.829);
+    border-top-right-radius: 70px;
+    border-top-left-radius: 70px;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+}
+
+.user-item svg {
+    border-radius: 100px;
+    padding: 10px;
+}
+
+.user-item p {
+    text-shadow: 1px 1px 2px #101820;
+    color: #8a2a2b;
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: bold;
+    font-size: 18px;
+}
+
+.user-item p a {
+    font-size: 13px;
+    background-color: #101820;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+.user-item p a:hover {
+    background-color: #2d2d31;
+    opacity: 0.8;
+}
+
+.user-item h2 {
+    color: #f2c763;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.list-users-detail h5 {
+    font-size: 24px;
+    text-align: center;
+    color:#8a2a2b;
+    margin-bottom: 10px;
+}
+
+.list-users-detail h4 {
+    font-size: 30px;
+    text-align: center;
+    color:#f2c763;
+}
+
+
+/* PC TYPE */
+
+.h4-pctype {
+    text-align: center;
+    margin: 10px auto;
+}
+
+.h1-pctype {
+    color:#f2c763;
+}

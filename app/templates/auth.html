@@ -1,0 +1,100 @@
+<!-- INICIO DE SESION -->
+<div id="idlogin" class="modal">
+    <form class="modal-content animate" action="/login" method="POST">
+      <div class="imgcontainer">
+        <span onclick="document.getElementById('idlogin').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="avatar">
+      </div>
+  
+      <div class="auth-container">
+        <label for="uname"><b>Nombre de usuario</b></label>
+        <input type="text" placeholder="Enter Username" name="uname" required>
+  
+        <label for="psw"><b>Contraseña</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" required>
+          
+        <div class="btn-grid">
+            <button type="submit">iniciar sesión</button>
+            <label>
+              <input type="checkbox" checked="checked" name="remember"> Remember me
+            </label>
+        </div>
+        
+      </div>
+  
+      <div class="auth-container">
+          <div class="btn-grid">
+            <button type="button" onclick="document.getElementById('idlogin').style.display='none'" class="cancelbtn">Cancel</button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+          </div>
+      </div>
+    </form>
+</div>
+
+<!-- REGISTRO -->
+
+<div id="idsignup" class="modal">
+    <form class="modal-content-2 animate" action="/signup/" method="POST">
+      <div class="imgcontainer">
+        <span onclick="document.getElementById('idsignup').style.display='none'" class="close" title="Close Modal">&times;</span>
+        <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="avatar">
+      </div>
+  
+      <div class="auth-container">
+          <div class="auth-grid">
+              <div>
+                <label for="uname"><b>Nombre de usuario</b></label>
+                <input type="text" placeholder="Ingrese nombre de usuario" name="uname" required>
+              </div>
+              <div>
+                <label for="email"><b>Correo</b></label>
+                <input type="email" placeholder="Ingrese correo electrónico" name="email" required>
+              </div>
+              <div>
+                <label for="psw"><b>Contraseña</b></label>
+                <input type="password" placeholder="Ingrese contraseña" name="psw" required>
+              </div>
+              <div>
+                <label for="psw_c"><b>Confirmar contraseña</b></label>
+                <input type="password" placeholder="Confirme la contraseña" name="psw_c" required>
+              </div>
+              <div>
+                <label for="name"><b>Nombres</b></label>
+                <input type="text" placeholder="Ingrese nombres" name="name" required>
+              </div>
+              <div>
+                <label for="lastname"><b>Apellidos</b></label>
+                <input type="text" placeholder="Ingrese apellidos" name="lastname" required>
+              </div>
+              <div>
+                <label for="city"><b>Ciudad</b></label>
+                <input type="text" placeholder="Ingrese ciudad" name="city" required>
+              </div>
+              <div>
+                <label for="phone"><b>Celular</b></label>
+                <input type="text" placeholder="Ingrese número de celular" name="phone" required>
+              </div>
+              <div>
+                <label for="birthday"><b>Fecha de nacimiento</b></label>
+                <input type="date" placeholder="Ingrese fecha de nacimiento" name="birthday" required>
+              </div>
+              <div>
+                <label for="bias"><b>Bias</b></label>
+                <input type="text" placeholder="Ingrese bias" name="bias" required>
+              </div>
+          </div>
+        
+            <div class="btn-grid">
+                <button type="submit">Registrar</button>
+            </div>  
+        
+
+      </div>
+  
+      <div class="auth-container">
+          <div class="btn-grid">
+            <button type="button" onclick="document.getElementById('idsignup').style.display='none'" class="cancelbtn">Cancel</button>
+          </div>
+      </div>
+    </form>
+</div>

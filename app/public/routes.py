@@ -16,8 +16,7 @@ def index():
     per_page = current_app.config['ITEMS_PER_PAGE']
     post_pagination = Post.all_paginated(page, per_page)
     
-    photocards = PhotocardDb.get_all()
-    return render_template("public/index.html", post_pagination=post_pagination, photocards=photocards)
+    return render_template("public/index.html", post_pagination=post_pagination)
 
 
 @public_bp.route("/p/<string:slug>/", methods=['GET', 'POST'])

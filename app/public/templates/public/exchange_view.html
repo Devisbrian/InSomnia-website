@@ -4,14 +4,15 @@
 
 {% block content %}
 
-
-<div style="background-color:rgba(0,0,0,0.8);" class="container">
-
-    <h1>Intercambios</h1>
+<h1>Intercambios</h1>
+<hr>
 
     {% if current_user.is_anonymous %}
+    <a href="#login" onclick="document.getElementById('idlogin').style.display='block'">
+        <h3 style="color:#f2c763; margin-top:20px;">Inicia sesión para crear un intercambio</h3>
+    </a>
     {% else %}
-        <a href="{{ url_for('public.exchange_form') }}">
+        <a class="add-album" href="{{ url_for('public.exchange_form') }}">
             <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -19,33 +20,37 @@
         </a>
     {% endif %}
 
-    <hr class="my-5">
+    <div class="exchange-grid">
 
-    {% for exchange in exchanges %}
-    <h4>{{ exchange.user_username }}</h4> <p>el {{ exchange.created|datetime }}</p>
-    <div class="row">
-        <div class="col">
-            <h5 style="color:#f2c763;">Tengo</h5>
-            Álbum: {{ exchange.album_from }} <br>
-            <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=exchange.pc_image_name_from) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-        </div>
-        <div class="col">
-            <br>
-            <br>
-            <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
-              </svg>
-        </div>
-        <div class="col">
-            <h5 style="color:#f2c763;">Quiero</h5>
-            Álbum: {{ exchange.album_to }} <br>
-            <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=exchange.pc_image_name_to) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-        </div>
-    </div>
+        {% for exchange in exchanges %}
 
-    {% endfor %}
-    
+        <div class="exchange-item">
 
-</div>
+            <h3>{{ exchange.user_username }}</h3> <p class="exchange-date">{{ exchange.created|datetime }}</p>
+
+            <div class="exchange-item-grid">
+
+                <div class="tengo">
+                    <h5>Tengo</h5>
+                    <p>Álbum: {{ exchange.album_from }}</p>
+                    <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=exchange.pc_image_name_from) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+
+                <div class="icono">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="currentColor" class="bi bi-arrow-left-right" viewBox="0 0 16 16">
+                        <path fill-rule="evenodd" d="M1 11.5a.5.5 0 0 0 .5.5h11.793l-3.147 3.146a.5.5 0 0 0 .708.708l4-4a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 11H1.5a.5.5 0 0 0-.5.5zm14-7a.5.5 0 0 1-.5.5H2.707l3.147 3.146a.5.5 0 1 1-.708.708l-4-4a.5.5 0 0 1 0-.708l4-4a.5.5 0 1 1 .708.708L2.707 4H14.5a.5.5 0 0 1 .5.5z"/>
+                    </svg>
+                </div>
+
+                <div class="quiero">
+                    <h5>Quiero</h5>
+                    <p>Álbum: {{ exchange.album_to }}</p>
+                    <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=exchange.pc_image_name_to) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                </div>
+                
+            </div>
+        </div>
+        {% endfor %}
+    </div>    
 
 {% endblock %}

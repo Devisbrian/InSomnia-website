@@ -157,6 +157,10 @@ class AlbumType(db.Model):
     @staticmethod
     def get_by_album(album):
         return AlbumType.query.filter_by(album=album).all()
+
+    @staticmethod
+    def get_album_distinct():
+        return AlbumType.query.distinct(AlbumType.album)
     
 
 class PhotocardDb(db.Model):

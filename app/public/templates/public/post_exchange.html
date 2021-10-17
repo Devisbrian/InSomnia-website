@@ -4,79 +4,77 @@
 
 {% block content %}
 
-<div style="background-color:rgba(0,0,0,0.8);" class="container">
+    <h1>Crear publicación</h1>
+    <hr>
 
-    <h1 style="color:white;">Crear publicación</h1>
-
-    <hr class="my-5">
-
-    <form action="" method="post" enctype="multipart/form-data" novalidate>
+    <div class="form-container">
+        <form action="" method="post" enctype="multipart/form-data" novalidate>
     
-        {{ form.hidden_tag() }}
-        <div class="row g-3">
+            {{ form.hidden_tag() }}
 
-            <div class="col-md-6">
-                <h3>Photocard que tienes</h3>
+            <div class="form-2c-grid">
+
+                <div class="form-item">
+                    <h3>Photocard que tienes</h3>
+                </div>
+
+                <div class="form-item">
+                    <h3>Photocard que quieres</h3>
+                </div>
+
+                <div class="form-item">
+                    {{ form.album_from.label() }}
+                    {{ form.album_from() }}<br>
+                    {% for error in form.album_from.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-item">
+                    {{ form.album_to.label() }}
+                    {{ form.album_to() }}<br>
+                    {% for error in form.album_to.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-item">
+                    {{ form.pc_type_from.label() }}
+                    {{ form.pc_type_from() }}<br>
+                    {% for error in form.pc_type_from.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-item">
+                    {{ form.pc_type_to.label() }}
+                    {{ form.pc_type_to() }}<br>
+                    {% for error in form.pc_type_to.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-item">
+                    {{ form.member_from.label() }}
+                    {{ form.member_from() }}<br>
+                    {% for error in form.member_from.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
+                <div class="form-item">
+                    {{ form.member_to.label() }}
+                    {{ form.member_to() }}<br>
+                    {% for error in form.member_to.errors %}
+                    <span style="color: red;">{{ error }}</span>
+                    {% endfor %}
+                </div>
+
             </div>
-            <div class="col-md-6">
-                <h3>Photocard que quieres</h3>
-            </div>
 
-            <div class="col-md-6">
-                {{ form.album_from.label(class="labe") }}
-                {{ form.album_from(class="formu") }}<br>
-                {% for error in form.album_from.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-6">
-                {{ form.album_to.label(class="labe") }}
-                {{ form.album_to(class="formu") }}<br>
-                {% for error in form.album_to.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-6">
-                {{ form.pc_type_from.label(class="labe") }}
-                {{ form.pc_type_from(class="formu") }}<br>
-                {% for error in form.pc_type_from.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-6">
-                {{ form.pc_type_to.label(class="labe") }}
-                {{ form.pc_type_to(class="formu") }}<br>
-                {% for error in form.pc_type_to.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-6">
-                {{ form.member_from.label(class="labe") }}
-                {{ form.member_from(class="formu") }}<br>
-                {% for error in form.member_from.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-            <div class="col-md-6">
-                {{ form.member_to.label(class="labe") }}
-                {{ form.member_to(class="formu") }}<br>
-                {% for error in form.member_to.errors %}
-                <span style="color: red;">{{ error }}</span>
-                {% endfor %}
-            </div>
-
-        </div>
-
-        {{ form.submit(class="btnsb") }}
-    
-    </form>
-
-</div>
+            {{ form.submit(class="post-btn") }}
+        </form>
+    </div>
 
 <script>
     let album_from_select = document.getElementById('album_from');

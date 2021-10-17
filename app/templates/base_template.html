@@ -4,15 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-    
-    <link rel="stylesheet" href="{{ url_for("static", filename="base.css") }}">
-    <link rel="stylesheet" href="{{ url_for("static", filename="auth.css") }}">
-    
-    <link rel="stylesheet" href="{{ url_for("static", filename="bootstrap/css/bootstrap.min.css") }}">
-    <script src="{{ url_for("static", filename="bootstrap/js/bootstrap.bundle.min.js") }}"></script>
-    <script src="{{ url_for("static", filename="bootstrap/js/jquery.js") }}"></script>
 
-  {% block head %} {% endblock %}
+    <!-- GOOGLE FONTS -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans&display=swap" rel="stylesheet">
+
+    <!-- PROPIOS -->
+    <link rel="stylesheet" href="{{ url_for("static", filename="base.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/auth.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/forms.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/album.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/photocards.css") }}">
+    <link rel="stylesheet" href="{{ url_for("static", filename="css/admin.css") }}">
+    
 
   </head>
 
@@ -20,8 +25,6 @@
       {% block body %}{% endblock %}
       {% include 'topnav.html' %}
 
-        
-        <hr class="my-1">
         {% with messages = get_flashed_messages() %}
         {% if messages %}
           <div class="container">
@@ -32,18 +35,27 @@
         {% endif %}
         {% endwith %}
 
+        <div class="container">
+
         {% block content %}{% endblock %}
 
-<p>
+        </div>
+
         {% include 'footer.html' %}
+        
+        {% include 'auth.html' %}
 
-   
-   <script src="{{ url_for("static", filename="bootstrap/js/bootstrap.min.js") }}"></script>
-   
-   <!-- Ordenar imágenes-->
-   <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.js"></script>
-   <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
+        <script type='text/javascript'>
+	        document.oncontextmenu = function(){return false}
+        </script>
+ 
+ <!-- Ordenar imágenes-->
+ <script src="https://unpkg.com/masonry-layout@4/dist/masonry.pkgd.min.js"></script>
+ <script src="https://unpkg.com/imagesloaded@4/imagesloaded.pkgd.js"></script>
 
-    <script src="{{ url_for("static", filename="script.js") }}" ></script>
+  <script src="{{ url_for("static", filename="js/script.js") }}" ></script>
+
+  
+ 
 </body>
 </html>

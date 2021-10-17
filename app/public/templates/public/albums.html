@@ -6,31 +6,31 @@
 
 {% block content %}
 
-<div class="container py-5">
-    <h1 style="color:white;">Álbumes</h1>
-    <hr class="my-5">
+    <h1>Álbumes</h1>
+    <hr>
+
     {% if current_user.is_admin %}
-        <a href="{{ url_for('admin.album_add') }}">
-            <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+        <a class="add-album" href="{{ url_for('admin.album_add') }}">
+            <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>
+            </svg>
         </a>
     {% endif %}
+    
     <p>
-    <div class="grid-container">
+    <div class="album-grid">
         {% for album in albums %}
-        <div class="grid-item" style="position: absolute; left: 0%; top: 0px;">
-            <div class="card border border-3">
+        <div class="album-item">
+            <div class="album-body">
                 {% if current_user.is_admin %}
                 <a href="{{ url_for('admin.update_album_form', album_id=album.id) }}">
                 {% endif %}
-                    <hr>
-                    <img class="bd-placeholder-img card-img-top" src="{{ url_for('media_albums', filename=album.album_image_name) }}" width="100%" height="100%" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
+                    <img src="{{ url_for('media_albums', filename=album.album_image_name) }}" >
                 </a>
-                <div class="card-body" style="color:black;">
-                    <h4 class="card-title">{{ album.album }}</h4>
-                    <p>Lanzamiento: {{ album.date }}</p>
+                <div class="album-text">
+                    <p class="lanzamiento">Lanzamiento: {{ album.date }}</p>
+                    <h4>{{ album.album }}</h4>
                     <h6>Tracklist</h6>
                     <p>{{ album.songs|safe }}</p> 
                 </div>
@@ -38,6 +38,5 @@
         </div>
         {% endfor %}
     </div>
-</div>
 
 {% endblock %}

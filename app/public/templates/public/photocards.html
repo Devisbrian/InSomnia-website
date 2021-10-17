@@ -5,45 +5,41 @@
 {% endblock %}
 
 {% block content %}
-<div class="container py-5">
-    <h1 style="color:white;">Listado de photocards</h1>
+
+    <h1 class="pc-list">Listado de photocards</h1>
+    <hr>
     {% if current_user.is_admin %}
-        <a href="{{ url_for('admin.photocarddb_add') }}">
+        <a class="pc-add" href="{{ url_for('admin.photocarddb_add') }}">
             <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
-              </svg>
+            </svg>
         </a>
     {% endif %}
-    <hr class="my-5">
-    
-
-
+ 
     {% for album in albums %}
-    <h2 style="color:#f2c763;">{{ album.album }}</h2>
-    <div style="width:100% !important;" class="container">
-        
+    <h2 class="pc-album">{{ album.album }}</h2>
+    <div class="pc-container">
         {% for pc_type in pc_types %}
         {% if pc_type.album == album.album%}
 
             {% if pc_type.pc_type != "FAITM" %}
                 {% if pc_type.pc_type != "Nightmare" %}
-                    <h5>{{ pc_type.pc_type }}</h5>
+                    <h5 class="pc-type">{{ pc_type.pc_type }}</h5>
                 {% endif %}
             {% endif %}
 
-        <div class="row">
+        <div class="pc-grid">
             {% for photocard in photocards %}
             {% if photocard.pc_type == pc_type.pc_type %}
-          <div class="col">
+          <div class="pc-item">
                 {% if current_user.is_admin %}
                 <a href="{{ url_for('admin.update_photocard_form', pc_id=photocard.id) }}">
                 {% endif %}
-                    <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
-                
+                    <img src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}">
                 </a>
 
-                    <p>{{ photocard.member }}</p>
+                    <p class="pc-member">{{ photocard.member }}</p>
           </div>
             {% endif %}
             {% endfor %}
@@ -51,9 +47,7 @@
         {% endif %}
         {% endfor %}
     </div>
-    <hr class="my-1">
+    <hr>
     {% endfor %}
-    
 
-</div>
 {% endblock %}

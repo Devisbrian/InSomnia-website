@@ -1,0 +1,128 @@
+.container h1.pc-list {
+    text-align: center;
+    margin: 20px 0;
+}
+
+.container a.pc-add {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.pc-album {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.pc-type {
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.pc-member {
+    text-align: center;
+    font-weight: bold;
+}
+
+.pc-container {
+    width:100%;
+}
+
+.pc-grid {
+    display: grid;
+    grid-template-columns: repeat(7,1fr);
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.pc-item img {
+    display:block;
+    margin:auto;
+    width:100px;
+    height: 150px;
+    border-radius: 10px;
+    box-shadow: 1px 1px 4px #f2c763;
+    margin-bottom: 5px;
+}
+
+.pc-container h5 {
+    text-shadow: 1px 1px 2px #101820;
+    color: #f2c763;
+}
+
+@media (max-width: 900px) {
+    .pc-grid {
+        grid-template-columns: repeat(6,1fr);
+    }
+}
+
+@media (max-width: 800px) {
+    .pc-grid {
+        grid-template-columns: repeat(5,1fr);
+    }
+}
+
+@media (max-width: 700px) {
+    .pc-grid {
+        grid-template-columns: repeat(4,1fr);
+    }
+}
+
+@media (max-width: 550px) {
+    .pc-grid {
+        grid-template-columns: repeat(3,1fr);
+    }
+}
+
+@media (max-width: 400px) {
+    .pc-grid {
+        grid-template-columns: repeat(2,1fr);
+    }
+    .container h1.pc-list {
+        font-size: 25px;
+    }
+    .pc-album { 
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 280px) {
+    .pc-grid {
+        grid-template-columns: repeat(1,1fr);
+    }
+}
+
+/* INTERCAMBIOS */
+
+.exchange-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.exchange-item h3{
+    text-align: center;
+    color:#f2c763;
+    font-size: 150%;
+}
+
+.exchange-item .exchange-date {
+    font-weight: bold;
+    color:#8a2a2b;
+    text-align: center;
+}
+
+.exchange-item-grid {
+    
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+.exchange-item-grid .icono {
+    margin-top: 60px;
+}
+
+.exchange-item-grid .tengo,
+.exchange-item-grid .quiero,
+.exchange-item-grid .icono {
+    text-align: center;
+}

@@ -1,74 +1,94 @@
-<nav class="navbar sticky-top navbar-expand-sm navbar-dark" style="background-color: #8a2a2b;">
-    <div class="container-fluid fst-italic">
-      
-      <a class="navbar-brand" href="{{ url_for('public.index') }}">
-        <img src="{{ url_for("static", filename="img/logo.png") }}" alt="bootstrap 5 logo" width="24px" height="30px" class="d-inline-block align-top"/>
-        InSomnia Colombia
-      </a>
-
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="{{ url_for('public.index') }}">Inicio</a>
+<div class="nav-container">
+  <nav class="nav-main">
+      <img href="{{ url_for('public.index') }}" src="{{ url_for("static", filename="img/logo.png") }}" alt="logo" class="nav-brand">
+      <ul class="nav-menu">
+          <li>
+              <a class="home-btn" href="{{ url_for('public.index') }}">Inicio</a>
           </li>
-          <li class="nav-item">
-              <a class="nav-link" href="/#news">Actualizaciones</a>
+          <li>
+              <a class="dc-btn" href="#Dreamcatcher">Dreamcatcher</a>
           </li>
-          
-          <li class="nav-item dropdown">
-            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-              Dreamcatcher
-            </a>
-            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <li>
+              <a class="fc-btn" href="#Fanclub">Fanclub</a>
+          </li>
+      </ul>
+      <ul class="dc-btn-show">
               <li>
-                <a class="dropdown-item" href="{{ url_for('public.list_albums') }}">Álbumes</a>
+                  <a href="{{ url_for('public.list_albums') }}">Álbumes</a>
               </li>
               <li>
-                <a class="dropdown-item" href="{{ url_for('public.list_photocards') }}">Photocards</a>
+                  <a href="{{ url_for('public.list_photocards') }}">Photocards</a>
               </li>
-            </ul>
+      </ul>
+      <ul class="fc-btn-show">
+          <li>
+              <a href="#">Eventos</a>
           </li>
-        </ul>
-
-        <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-
+          <li>
+              <a href="#">Fotos</a>
+          </li>
+      </ul>
+      <ul class="nav-menu-right">
           {% if current_user.is_anonymous %}
-            <li class="nav-item">
-              <a class="nav-link" href="{{ url_for('auth.show_signup_form') }}">Registrar</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="{{ url_for('auth.login') }}">Login</a>
-            </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link" href="{{ url_for('public.show_exchange') }}">Intercambio</a>
+          <li>
+              <a class="nav-login" href="#login" onclick="document.getElementById('idlogin').style.display='block'">Iniciar sesión</a>
           </li>
-            <li class="nav-item dropdown">
+          <li>
+              <a class="nav-signup" href="#signup" onclick="document.getElementById('idsignup').style.display='block'">Registrar</a>
+          </li>
 
-              <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                {{ current_user.username }}
-              </a>
-              <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                {% if current_user.is_staff %}
-                <li>
-                <a class="dropdown-item" href="{{ url_for('admin.post_form') }}">Crear post</a>
-                </li>
-                <li>
-                <a class="dropdown-item" href="{{ url_for('admin.index') }}">Admin</a>
-                </li>
-                {% endif %}
-                <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="{{ url_for('auth.logout') }}">Logout</a></li>
-              </ul>
-            </li>
+            <script>
+            
+            document.querySelector('.nav-login').addEventListener('click', () => {
+                document.querySelector('.fc-btn-show').classList.remove('show');
+                document.querySelector('.dc-btn-show').classList.remove('show');
+                document.querySelector('.user-btn-show').classList.remove('show');
+            });
+
+            document.querySelector('.nav-signup').addEventListener('click', () => {
+                document.querySelector('.fc-btn-show').classList.remove('show');
+                document.querySelector('.dc-btn-show').classList.remove('show');
+                document.querySelector('.user-btn-show').classList.remove('show');
+            });
+            </script>
+
+          {% else %}
+          <li>
+            <a class="nav-exchange" href="{{ url_for('public.show_exchange') }}">Intercambio</a>
+          </li>
+          <li>
+              <a class="user-btn" href="#{{ current_user.username }}">{{ current_user.username }}</a>
+          </li>
+          <script>
+            document.querySelector('.user-btn').addEventListener('click', () => {
+                document.querySelector('.user-btn-show').classList.toggle('show');
+                document.querySelector('.fc-btn-show').classList.remove('show');
+                document.querySelector('.dc-btn-show').classList.remove('show');
+            });
+          </script>
           {% endif %}
-
-        </ul>
-
-      </div>
-    </div>
+      </ul>
+      <ul class="user-btn-show">
+          {% if current_user.is_staff %}
+          <li>
+              <a href="{{ url_for('admin.post_form') }}">Crear post</a>
+          </li>
+          <li>
+              <a href="{{ url_for('admin.index') }}">Admin</a>
+          </li>
+          {% endif %}
+          <li>
+              <hr>
+          </li>
+          <li>
+              <a href="{{ url_for('auth.logout') }}">Cerrar sesión</a>
+          </li>
+      </ul>
   </nav>
+</div>
+
+<div class="menu-btn">
+  <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-view-list" viewBox="0 0 16 16">
+      <path d="M3 4.5h10a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2zm0 1a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1H3zM1 2a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 2zm0 12a.5.5 0 0 1 .5-.5h13a.5.5 0 0 1 0 1h-13A.5.5 0 0 1 1 14z"/>
+    </svg>
+</div>

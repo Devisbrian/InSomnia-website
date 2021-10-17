@@ -9,72 +9,80 @@
 {% endblock %}
 
 {% block content %}
-<div class="sesion">
-<div class="container">
+
     <h1>Agregar un álbum</h1>
-<hr>
-    <form action="" method="post" enctype="multipart/form-data" novalidate>
-        {{ form.hidden_tag() }}
+    <hr>
+
+    <div class="form-container">
+        <form action="" method="post" enctype="multipart/form-data" novalidate>
+            {{ form.hidden_tag() }}
+
+        <div class="form-2c-grid">
+
+            <div class="form-item">
+                {{ form.album.label() }}
+                {{ form.album() }}<br>
+                {% for error in form.album.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.date.label() }}
+                {{ form.date(class='datepicker') }}<br>
+                {% for error in form.date.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.songs.label() }}
+                {{ form.songs() }}<br>
+                {% for error in form.songs.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.producers.label() }}
+                {{ form.producers() }}<br>
+                {% for error in form.producers.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.spotify.label() }}
+                {{ form.spotify() }}<br>
+                {% for error in form.spotify.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.youtube.label() }}
+                {{ form.youtube() }}<br>
+                {% for error in form.youtube.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+        </div>
+
         <div>
-            {{ form.album.label(class="labe") }}
-            {{ form.album(class="formu") }}<br>
-            {% for error in form.album.errors %}
+        {{ form.album_image.label() }}
+        <div class="file-select" id="src-file1" >
+            {{ form.album_image() }}<br>
+        </div>
+        {% for error in form.album_image.errors %}
             <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
+        {% endfor %}
+        </div>     
         <div>
-            {{ form.date.label(class="labe") }}
-            {{ form.date(class='datepicker formu') }}<br>
-            {% for error in form.date.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
+        {{ form.submit(class="post-btn") }}
         </div>
-        <div>
-            {{ form.songs.label(class="labe") }}
-            {{ form.songs(class="formu") }}<br>
-            {% for error in form.songs.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.producers.label(class="labe") }}
-            {{ form.producers(class="formu") }}<br>
-            {% for error in form.producers.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.spotify.label(class="labe") }}
-            {{ form.spotify(class="formu") }}<br>
-            {% for error in form.spotify.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.youtube.label(class="labe") }}
-            {{ form.youtube(class="formu") }}<br>
-            {% for error in form.youtube.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.album_image.label(class="labe") }}
-            {{ form.album_image(class="form-control form-control-lg") }}<br>
-            {% for error in form.album_image.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-        </div>
-        <div>
-            {{ form.submit(class="btnsb") }}
-        </div>
-    </form>
-    
-    {% if album %}
-    <form action="{{ url_for('admin.delete_album', album_id=album.id) }}" method="post" novalidate>
-        <input type="submit" value="Eliminar" />
-    </form>
-    {% endif %}
-</div>
-</div>
+        </form>
+        
+        {% if album %}
+        <form action="{{ url_for('admin.delete_album', album_id=album.id) }}" method="post" novalidate>
+            <input class="post-btn" type="submit" value="Eliminar" />
+        </form>
+        {% endif %}
+    </div>
 {% endblock %}
 

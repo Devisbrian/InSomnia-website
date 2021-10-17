@@ -10,54 +10,62 @@
 
 {% block content %}
 
+    <h1>Crear publicación</h1>
+    <hr>
 
-<div class="container">
+  <div class="form-container">
+      <form action="" method="post" enctype="multipart/form-data" novalidate>
+          {{ form.hidden_tag() }}
 
-  <h1 style="color:white;">Crear publicación</h1>
+          <div class="form-1c-grid">
+          
+              <div class="form-item">
+                {{ form.title.label() }}
+                {{ form.title() }}<br>
+                {% for error in form.title.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+              </div>
 
-  <hr class="my-5">
+              <div class="form-item">
+                {{ form.description.label() }}
+                {{ form.description() }}<br>
+                {% for error in form.description.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+              </div>
 
-    <form action="" method="post" enctype="multipart/form-data" novalidate>
-        {{ form.hidden_tag() }}
-        
-            {{ form.title.label(class="labe") }}
-            {{ form.title(class="formu") }}<br>
-            {% for error in form.title.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
+              <div class="form-item">
+                {{ form.post_image.label() }}<br>
+                <div class="file-select" id="src-file1" >
+                {{ form.post_image() }}<br>
+                </div>
+                {% for error in form.post_image.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+              </div>
 
-            {{ form.description.label(class="labe") }}
-            {{ form.description(class="formu") }}<br>
-            {% for error in form.description.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-
-            <div class="mb-3">
-              {{ form.post_image.label(class="labe") }}<br>
-              {{ form.post_image(class="form-control form-control-lg") }}<br>
-              {% for error in form.post_image.errors %}
+              <div class="form-item">
+              {{ form.content.label() }}
+              {{ form.content(id="RichText", style="color:#111021 !important;") }}<br>
+              {% for error in form.content.errors %}
               <span style="color: red;">{{ error }}</span>
               {% endfor %}
+              </div>
+
             </div>
-
-            {{ form.content.label(class="labe") }}
-            {{ form.content(id="RichText", style="color:#111021 !important;") }}<br>
-            {% for error in form.content.errors %}
-            <span style="color: red;">{{ error }}</span>
-            {% endfor %}
-
-            
-            {{ form.submit(class="btnsb") }}
-    </form>
-  
-
-    {% if post %}
-      <form action="{{ url_for('admin.delete_post', post_id=post.id) }}" method="post" novalidate>
-          <input class="btnsb" type="submit" value="Eliminar" />
+              
+              {{ form.submit(class="post-btn") }}
       </form>
-    {% endif %}
+    
 
-</div>
+      {% if post %}
+        <form action="{{ url_for('admin.delete_post', post_id=post.id) }}" method="post" novalidate>
+            <input class="post-btn" type="submit" value="Eliminar" />
+        </form>
+      {% endif %}
+
+  </div>
 
     <!-- RICH TEXT -->
     <link rel="stylesheet" href="{{ url_for("static", filename="Rich/site.css") }}">
@@ -67,9 +75,11 @@
     <script type="text/javascript" src="{{ url_for("static", filename="Rich/jquery.richtext.js") }}"></script>
 
     <script>
+
       $(document).ready(function() {
           $('#RichText').richText();
       });
+
       </script>
 
 {% endblock %}

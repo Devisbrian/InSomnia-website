@@ -227,7 +227,8 @@ def albumtype_add():
 @staff_required
 def list_albumtype():
     album_type = AlbumType.get_all()
-    return render_template("admin/albumtype.html", album_type=album_type)
+    albums = AlbumType.get_album_distinct()
+    return render_template("admin/albumtype.html", album_type=album_type, albums=albums)
 
 @admin_bp.route("/admin/pctype/<int:album_type_id>", methods=['GET', 'POST'])
 @login_required

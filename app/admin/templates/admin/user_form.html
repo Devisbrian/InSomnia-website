@@ -6,69 +6,73 @@
 
 {% block content %}
 
-<div class="container" style="background-color:rgba(0,0,0,0.8)">
-  <h1 style="color:white;">Detalle del usuario</h1>
-  <h3 style="color:#f2c763;">{{ user.username }}</h3>
+  <h1>{{ user.username }}</h1>
+  <hr>
 
-  <hr class="my-5">
-
-    <div>
-    <h5 style="color:#8a2a2b;">Nombre: </h5> <h4 style="color:#f2c763;">{{ user.name }} {{ user.lastname }}</h4>
+    <div class="list-users-detail">
+        <h5>Nombre: </h5>
+        <h4>{{ user.name }} {{ user.lastname }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Email: </h5> <h4 style="color:#f2c763;">{{ user.email }}</h4>
+    <div class="list-users-detail">
+        <h5>Email: </h5>
+        <h4>{{ user.email }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Ciudad: </h5> <h4 style="color:#f2c763;">{{ user.city }}</h4>
+    <div class="list-users-detail">
+        <h5>Ciudad: </h5>
+        <h4>{{ user.city }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Celular: </h5> <h4 style="color:#f2c763;">{{ user.phone }}</h4>
+    <div class="list-users-detail">
+        <h5>Celular: </h5>
+        <h4>{{ user.phone }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Fecha de cumpleaños: </h5> <h4 style="color:#f2c763;">{{ user.birthday|datetime }}</h4>
+    <div class="list-users-detail">
+        <h5>Fecha de cumpleaños: </h5>
+        <h4>{{ user.birthday|datetime }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Bias: </h5> <h4 style="color:#f2c763;">{{ user.bias }}</h4>
+    <div class="list-users-detail">
+        <h5>Bias: </h5>
+        <h4>{{ user.bias }}</h4>
     </div>
-    <div>
-    <h5 style="color:#8a2a2b;">Fecha creación: </h5> <h4 style="color:#f2c763;">{{ user.created|datetime('full') }}</h4>
+    <div class="list-users-detail">
+        <h5>Fecha creación: </h5>
+        <h4>{{ user.created|datetime('full') }}</h4>
     </div>
     
   
     <form action="" method="post" novalidate>
         {{ form.hidden_tag() }}
-        <div class="form-check form-switch">
-            <div class="position-relative">
-              <h5 style="color:#8a2a2b;">{{ form.is_staff.label() }}</h5>
-              <h5 style="color:#8a2a2b;">{{ form.is_staff(class="form-check-input position-absolute top-50 start-50") }}</h5><br>
-            </div>
+        <div class="list-users-detail">
+            <h5>{{ form.is_staff.label() }}</h5>
+            <h5>{{ form.is_staff() }}</h5><br>
             {% for error in form.is_staff.errors %}
-            <span style="color: red;">{{ error }}</span>
+                <span style="color: red;">{{ error }}</span>
             {% endfor %}
-          
         </div>
+
         {% if current_user.is_admin %}
         {{ form.hidden_tag() }}
-        <div class="form-check form-switch">
-            <div class="position-relative">
-              <h5 style="color:#8a2a2b;">{{ form.is_admin.label() }}</h5>
-              <h5 style="color:#8a2a2b;">{{ form.is_admin(class="form-check-input position-absolute top-50 start-50") }}</h5><br>
-            </div>
+        <div class="list-users-detail">
+            <h5>{{ form.is_admin.label() }}</h5>
+            <h5>{{ form.is_admin() }}</h5><br>
             {% for error in form.is_admin.errors %}
             <span style="color: red;">{{ error }}</span>
             {% endfor %}
+        </div>
         {% endif %}
-          
+        
+
+        <div class="form-container">
+            {{ form.submit(class="post-btn") }}
         </div>
 
-        <div>
-            {{ form.submit(class="btnsb") }}
-        </div>
     </form>
+
     {% if current_user.is_admin %}
-    <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="post" novalidate>
-        <input class="btnsb" type="submit" value="Eliminar" />
-    </form>
+        <form action="{{ url_for('admin.delete_user', user_id=user.id) }}" method="post" novalidate>
+            <div class="form-container">
+            <input class="post-btn" type="submit" value="Eliminar" />
+            </div>
+        </form>
     {% endif %}
-</div>
+    
 {% endblock %}

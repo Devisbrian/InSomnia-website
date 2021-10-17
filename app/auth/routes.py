@@ -1,4 +1,5 @@
 from flask import render_template, redirect, url_for, request, current_app, flash
+from flask.json import dumps
 from app.common.mail import send_email
 from flask_login import current_user, login_user, logout_user
 from werkzeug.urls import url_parse
@@ -31,27 +32,38 @@ def email_confirm(token):
 def show_signup_form():
     if current_user.is_authenticated:
         return redirect(url_for('public.index'))
-    form = SignupForm()
-    error = None
-    if form.validate_on_submit():
-        username = form.username.data
-        name = form.name.data
-        lastname = form.lastname.data
-        city = form.city.data
-        phone = form.phone.data
-        birthday = form.birthday.data
-        bias = form.bias.data
-        email = form.email.data
-        password = form.password.data
-        password_confirm = form.password_confirm.data
+    #form = SignupForm()
+    #error = None
+    #if form.validate_on_submit():
+        #username = form.username.data
+        #name = form.name.data
+        #lastname = form.lastname.data
+        #city = form.city.data
+        #phone = form.phone.data
+        #birthday = form.birthday.data
+        #bias = form.bias.data
+        #email = form.email.data
+        #password = form.password.data
+        #password_confirm = form.password_confirm.data
+    if request.method == 'POST':
+        username = request.form.get('uname')
+        name = request.form.get('name')
+        lastname = request.form.get('lastname')
+        city = request.form.get('city')
+        phone = request.form.get('phone')
+        birthday = request.form.get('birthday')
+        bias = request.form.get('bias')
+        email = request.form.get('email')
+        password = request.form.get('psw')
+        password_confirm = request.form.get('psw_c')
         # Comprobamos que no hay ya un usuario con ese email
         user = User.get_by_email(email)
         user2 = User.get_by_username(username)
         
         if user is not None:
-            error = f'El email {email} ya está siendo utilizado por otra persona'
+            flash('El email digitado ya está siendo utilizado por otra persona')
         elif user2 is not None:
-            error = f'El nombre de usuario {username} ya está siendo utilizado por otra persona'
+            flash('El nombre de usuario digitado ya está siendo utilizado por otra persona')
         else:
             # Creamos el usuario y lo guardamos
             user = User(username=username, name=name, lastname=lastname, email=email, city=city, phone=phone, birthday=birthday, bias=bias)
@@ -72,25 +84,30 @@ def show_signup_form():
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('public.index')
             return redirect(next_page)
-    return render_template("auth/signup_form.html", form=form, error=error)
-
+    return redirect(url_for('public.index'))
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('public.index'))
-    form = LoginForm()
-    if form.validate_on_submit():
-        user = User.get_by_username(form.username.data)
-        if user is not None and user.check_password(form.password.data):
-            login_user(user, remember=form.remember_me.data)
+    #form = LoginForm()
+    if request.method == 'POST':
+        user = request.form.get('uname')
+        user = User.get_by_username(user)
+        psw = request.form.get('psw')
+        remember_me = request.form.get('remember')
+    #if form.validate_on_submit():
+        #user = User.get_by_username(form.username.data)
+        #if user is not None and user.check_password(form.password.data):
+        if user is not None and user.check_password(psw):
+            login_user(user, remember=remember_me)
             next_page = request.args.get('next')
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('public.index')
             return redirect(next_page)
         else:
             flash('Ooops! El usuario o la contraseña es incorrecta')
-    return render_template('auth/login_form.html', form=form)
+    return redirect(url_for('public.index'))
 
 
 @auth_bp.route('/logout')

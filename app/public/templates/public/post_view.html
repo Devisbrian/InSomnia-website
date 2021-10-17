@@ -3,65 +3,58 @@
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
-<div style="background-color:rgba(0,0,0,0.8);" class="container">
     
     <h1>{{ post.title }}</h1>
+    <hr>
 
-    <hr class="my-3">
-
-        
-    <div class="text-end">
-        <span class="blogDate">{{ post.created|datetime('full') }}</span>
-        {% if current_user.is_staff %}
-        <a href={{ url_for('admin.update_post_form', post_id=post.id) }}
-          <button type="button" class="btn btn-sm btn-outline-secondary">Editar</button>
-        </a>
-        {% endif %}
+    <div>
+        <span>{{ post.created|datetime('full') }}</span>
+            {% if current_user.is_staff %}
+                <a href={{ url_for('admin.update_post_form', post_id=post.id) }}
+                <button type="button" class="btn btn-sm btn-outline-secondary">Editar</button>
+                </a>
+            {% endif %}
     </div>
-    <p>
-        <div class="container">
-    {{ post.content|safe }}
-        </div>
-    <hr class="my-5">
-    <h2>Comentarios</h2>
 
-    <div class="container">
-        <div class="row g-3">
-            <div class="col-md-6">
-                <div id="comments">
-                    {% for comment in post.comments %}
-                    
-                        <div class="row">
-                            <div class="col-auto"> <span class="comment-user"> {{ comment.user_username }} </span> <br> <span class="blogDate">{{ comment.created|datetime }}</span></div>
-                            <div class="col-auto me-auto">{{ comment.content }}</div>
-                        </div>
-                        <hr class="my-2">
+        {{ post.content|safe }}
+
+    <hr>
+    <h1>Comentarios</h1>
+
+
+    <div class="form-2c-grid comments">
+
+        <div id="comments">
+            {% for comment in post.comments %}
+                <div class="form-2c-grid">
+                    <span class="comment-user"> {{ comment.user_username }} </span>
+                    <span class="blogDate">{{ comment.created|datetime }}</span>
+                </div>
+                <p>{{ comment.content }}</p>
+                <hr>
+            {% endfor %}
+        </div>
+
+        <div id="comment form">
+        {% if current_user.is_authenticated %}
+            <div class="form-container">
+            <form action="" method="post" novalidate>
+                {{ form.hidden_tag() }}
+                    <h2>Agrega un comentario</h2>
+                    {{ form.content() }}<br>
+                    {% for error in form.content.errors %}
+                    <span style="color: red;">{{ error }}</span>
                     {% endfor %}
-
-                </div>
+                    {{ form.submit(class="post-btn") }}
+            </form>
             </div>
-            <div class="col-md-6">
-                {% if current_user.is_authenticated %}
-                <div>
-                    <form action="" method="post" novalidate>
-                        {{ form.hidden_tag() }}
-                        <div>
-                            Agrega un comentario<br>
-                            {{ form.content(class="formu") }}<br>
-                            {% for error in form.content.errors %}
-                            <span style="color: red;">{{ error }}</span>
-                            {% endfor %}
-                        </div>
-                        <div>
-                            {{ form.submit() }}
-                        </div>
-                    </form>
-                </div>
-                {% endif %}
-            </div>
+        {% else %}
+            <a href="#login" onclick="document.getElementById('idlogin').style.display='block'">
+            <h3 style="color:#f2c763; margin-top:20px;">Inicia sesión para escribir un comentario</h3>
+            </a>
+        {% endif %}
         </div>
+
     </div>
 
-
-</div>
 {% endblock %}
