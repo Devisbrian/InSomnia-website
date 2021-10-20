@@ -16,7 +16,7 @@
     border-radius: 30px;
     gap: 25px;
     justify-content: center;
-    margin: 0 auto;
+    margin: 15px auto;
 }
 
 .admin-item h1 {
@@ -110,4 +110,22 @@
 
 .h1-pctype {
     color:#f2c763;
+}
+
+@media (max-width: 920px){
+    .admin-container{
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 700px){
+    .admin-container{
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 460px){
+    .admin-container{
+        grid-template-columns: 1fr;
+    }
 }

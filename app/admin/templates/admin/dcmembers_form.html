@@ -1,0 +1,21 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+        Nuevo miembro
+{% endblock %}
+
+{% block content %}
+
+<form action="" method="post" enctype="multipart/form-data" novalidate>
+    {{ form.hidden_tag() }}
+
+    {{ form.member.label() }}
+    {{ form.member() }}<br>
+    {% for error in form.member.errors %}
+    <span style="color: red;">{{ error }}</span>
+    {% endfor %}
+
+    {{ form.submit(class="post-btn") }}
+</form>
+
+{% endblock %}

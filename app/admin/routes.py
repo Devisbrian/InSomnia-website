@@ -7,9 +7,9 @@ from app.auth.models import User
 import os
 from werkzeug.utils import secure_filename
 
-from app.models import Post, PhotocardDb, AlbumType, Album
+from app.models import Post, PhotocardDb, AlbumType, Album, Members
 from . import admin_bp
-from .forms import PostForm, UserAdminForm, PhotocardDbForm, AlbumTypeForm, AlbumForm
+from .forms import PostForm, UserAdminForm, PhotocardDbForm, AlbumTypeForm, AlbumForm, MemberDcForm
 
 logger = logging.getLogger(__name__)
 
@@ -205,7 +205,6 @@ def delete_album(album_id):
     return redirect(url_for('public.list_albums'))
 
 
-
 @admin_bp.route("/admin/album-type-database", methods=['GET', 'POST'])
 @login_required
 @staff_required
@@ -216,7 +215,8 @@ def albumtype_add():
     if form.validate_on_submit():
         album = form.album.data
         pc_type = form.pc_type.data
-        albumtype = AlbumType(album=album, pc_type=pc_type)
+        albumDb = Album.get_by_album(album)
+        albumtype = AlbumType(album=albumDb, pc_type=pc_type)
         albumtype.save()
         logger.info(f'Guardando nueva categoria de photocard')
         return redirect(url_for('admin.index'))
@@ -242,8 +242,11 @@ def update_albumtype_form(album_type_id):
     form.album.choices = [(albums.album, albums.album) for albums in Album.get_all()]
     form.album.choices.insert(0, ("", "Seleccione"))
     if form.validate_on_submit():
-        album_type.album = form.album.data
+        album = form.album.data
         album_type.pc_type = form.pc_type.data
+
+        albumDb = Album.get_by_album(album)
+        album_type.album = albumDb
         album_type.save()
         return redirect(url_for('admin.list_albumtype'))
     return render_template("admin/albumtype_form.html", album_type=album_type, form=form)
@@ -271,13 +274,19 @@ def photocarddb_add():
     form.album.choices.insert(0, ("", "Seleccione"))
     form.pc_type.choices = [(pc_type.pc_type, pc_type.pc_type) for pc_type in AlbumType.get_all()]
     form.pc_type.choices.insert(0, ("", "Seleccione"))
+    form.member.choices = [(members.name, members.name) for members in Members.get_all()]
+    form.member.choices.insert(0, ("", "Seleccione"))
     if form.validate_on_submit():
-        album = form.album.data
-        member = form.member.data
-        pc_type = form.pc_type.data
+        album = form.album.data #foreign
+        member = form.member.data #foreign
+        pc_type = form.pc_type.data #foreign
         pc_name = form.pc_name.data
         file = form.photocard_image.data
         pc_image_name = None
+
+        albumDb = Album.get_by_album(album)
+        memberDb = Members.get_by_name(member)
+        pc_typeDb = AlbumType.get_by_type(pc_type)
         
         if file:
             pc_image_name = secure_filename(file.filename)
@@ -285,7 +294,7 @@ def photocarddb_add():
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, pc_image_name)
             file.save(file_path)
-        pc_db = PhotocardDb(album=album, member=member, pc_type=pc_type, pc_name=pc_name)
+        pc_db = PhotocardDb(album=albumDb, member=memberDb, pc_type=pc_typeDb, pc_name=pc_name)
         pc_db.pc_image_name = pc_image_name
         pc_db.save()
         logger.info(f'Guardando nueva photocard {pc_name}')
@@ -305,13 +314,23 @@ def update_photocard_form(pc_id):
     form.album.choices.insert(0, ("", "Seleccione"))
     form.pc_type.choices = [(pc_type.pc_type, pc_type.pc_type) for pc_type in AlbumType.get_all()]
     form.pc_type.choices.insert(0, ("", "Seleccione"))
+    form.member.choices = [(members.name, members.name) for members in Members.get_all()]
+    form.member.choices.insert(0, ("", "Seleccione"))
 
     if form.validate_on_submit():
-        photocard.album = form.album.data
-        photocard.member = form.member.data
-        photocard.pc_type = form.pc_type.data
+        album = form.album.data
+        member = form.member.data
+        pc_type = form.pc_type.data
         photocard.pc_name = form.pc_name.data
         photocard.file = form.photocard_image.data
+
+        albumDb = Album.get_by_album(album)
+        memberDb = Members.get_by_name(member)
+        pc_typeDb = AlbumType.get_by_type(pc_type)
+
+        photocard.album = albumDb
+        photocard.member = memberDb
+        photocard.pc_type = pc_typeDb
 
         if photocard.file:
             photocard.pc_image_name = secure_filename(photocard.file.filename)
@@ -337,11 +356,21 @@ def delete_photocard(photocard_id):
     logger.info(f'La photocard {photocard_id} ha sido eliminada')
     return redirect(url_for('public.list_photocards'))
 
+@admin_bp.route("/admin/dcmembers/", methods=['POST', 'GET'])
+def dc_members():
+    form = MemberDcForm()
+    if form.validate_on_submit():
+        name = form.member.data
+        memberdb = Members(name=name)
+        memberdb.save()
+        return redirect(url_for('admin.dc_members'))
+    return render_template('admin/dcmembers_form.html', form=form)
 
-# FILTROS Jsonify
+# Jsonify
 @admin_bp.route("/pc_type/<album>")
 def pc_type(album):
-    pc_types = AlbumType.get_by_album(album)
+    albums = Album.get_by_album(album)
+    pc_types = AlbumType.get_by_album(albums.id)
     
     pc_typeArray = []
     

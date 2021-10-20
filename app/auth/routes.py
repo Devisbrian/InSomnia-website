@@ -9,6 +9,7 @@ from app import login_manager, urltimed
 from . import auth_bp
 from .forms import SignupForm, LoginForm
 from .models import User
+from app.models import Members
 import logging
 
 logger = logging.getLogger(__name__)
@@ -32,33 +33,37 @@ def email_confirm(token):
 def show_signup_form():
     if current_user.is_authenticated:
         return redirect(url_for('public.index'))
-    #form = SignupForm()
-    #error = None
-    #if form.validate_on_submit():
-        #username = form.username.data
-        #name = form.name.data
-        #lastname = form.lastname.data
-        #city = form.city.data
-        #phone = form.phone.data
-        #birthday = form.birthday.data
-        #bias = form.bias.data
-        #email = form.email.data
-        #password = form.password.data
-        #password_confirm = form.password_confirm.data
-    if request.method == 'POST':
-        username = request.form.get('uname')
-        name = request.form.get('name')
-        lastname = request.form.get('lastname')
-        city = request.form.get('city')
-        phone = request.form.get('phone')
-        birthday = request.form.get('birthday')
-        bias = request.form.get('bias')
-        email = request.form.get('email')
-        password = request.form.get('psw')
-        password_confirm = request.form.get('psw_c')
+    form = SignupForm()
+    form.bias.choices = [(member.name, member.name) for member in Members.get_all()]
+    form.bias.choices.insert(0, ("", "Seleccione una o más"))
+    error = None
+    #if request.method == 'POST': # PARA MODAL SIGNUP
+        #username = request.form.get('uname')
+        #name = request.form.get('name')
+        #lastname = request.form.get('lastname')
+        #city = request.form.get('city')
+        #phone = request.form.get('phone')
+        #birthday = request.form.get('birthday')
+        #bias = request.form.get('bias')
+        #email = request.form.get('email')
+        #password = request.form.get('psw')
+        #password_confirm = request.form.get('psw_c')
+    if form.validate_on_submit():
+        username = form.username.data
+        name = form.name.data
+        lastname = form.lastname.data
+        city = form.city.data
+        phone = form.phone.data
+        birthday = form.birthday.data
+        bias = form.bias.data
+        email = form.email.data
+        password = form.password.data
+        password_confirm = form.password_confirm.data
+
         # Comprobamos que no hay ya un usuario con ese email
         user = User.get_by_email(email)
         user2 = User.get_by_username(username)
+        
         
         if user is not None:
             flash('El email digitado ya está siendo utilizado por otra persona')
@@ -66,8 +71,12 @@ def show_signup_form():
             flash('El nombre de usuario digitado ya está siendo utilizado por otra persona')
         else:
             # Creamos el usuario y lo guardamos
-            user = User(username=username, name=name, lastname=lastname, email=email, city=city, phone=phone, birthday=birthday, bias=bias)
+            user = User(username=username, name=name, lastname=lastname, email=email, city=city, phone=phone, birthday=birthday)
             user.set_password(password)
+            # Busqueda de bias
+            for biases in bias:
+                bias_for_user = Members.get_by_name(biases)
+                user.bias.append(bias_for_user)
             user.save()
             # Crear token de verificación de correo
             token = urltimed.dumps(email, salt='email-confirm')
@@ -84,7 +93,7 @@ def show_signup_form():
             if not next_page or url_parse(next_page).netloc != '':
                 next_page = url_for('public.index')
             return redirect(next_page)
-    return redirect(url_for('public.index'))
+    return render_template('auth/signup_form.html', form=form)
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():

@@ -4,7 +4,6 @@ import datetime
 
 from app import db
 
-
 class User(db.Model, UserMixin):
 
     __tablename__ = 'blog_user'
@@ -18,18 +17,14 @@ class User(db.Model, UserMixin):
     city = db.Column(db.String(80))
     phone = db.Column(db.String(15))
     birthday = db.Column(db.Date)
-    bias = db.Column(db.String(80))
     is_admin = db.Column(db.Boolean, default=False)
     is_staff = db.Column(db.Boolean, default=False)
     confirm = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(128), nullable=False)
-
-#    def __init__(self, name, email):
-#        self.name = name
-#        self.email = email
+    exchange = db.relationship('PhotocardExchange', backref=db.backref('user', lazy=True))
 
     def __repr__(self):
-        return f'<User {self.email}>'
+        return f'<User {self.username}>'
 
     def set_password(self, password):
         self.password = generate_password_hash(password)

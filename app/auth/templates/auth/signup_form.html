@@ -1,5 +1,3 @@
-
-<!-- NO ESTÁ EN USO
 {% extends "base_template.html" %}
 
 {% block title %}Registro de usuarios{% endblock %}
@@ -9,94 +7,89 @@
         <p style="color: red;"><strong>Error:</strong> {{ error }}
     {% endif %}
 
+<div class="form-container">
     <form action="" method="post" novalidate>
-        {{ form.hidden_tag() }}
+            {{ form.hidden_tag() }}
 
-<div style="width:75%;" class="container">        
-    <div class="imgcontainer">
-        <img src="{{ url_for("static", filename="img/logo.png") }}" alt="Avatar" class="avatar">
-    </div>
-    
-    
+        <div class="imgcontainer">
+            <img src="{{ url_for("static", filename="img/logo.png") }}" alt="Avatar" class="avatar">
+        </div>
+        
+        <div class="form-2c-grid">
+            <div class="form-item">
+                {{ form.username.label() }}<br>
+                {{ form.username() }}<br>
+                {% for error in form.username.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.email.label() }}<br>
+                {{ form.email() }}<br>
+                {% for error in form.email.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.password.label() }}<br>
+                {{ form.password() }}<br>
+                {% for error in form.password.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.password_confirm.label() }}<br>
+                {{ form.password_confirm() }}<br>
+                {% for error in form.password_confirm.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.name.label() }}<br>
+                {{ form.name() }}<br>
+                {% for error in form.name.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.lastname.label() }}<br>
+                {{ form.lastname() }}<br>
+                {% for error in form.lastname.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.city.label() }}<br>
+                {{ form.city() }}<br>
+                {% for error in form.city.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.phone.label() }}<br>
+                {{ form.phone() }}<br>
+                {% for error in form.phone.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.birthday.label() }}<br>
+                {{ form.birthday(class='datepicker') }}<br>
+                {% for error in form.birthday.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.bias.label() }}<br>
+                {{ form.bias() }}<br>
+                {% for error in form.bias.errors %}
+                <span style="color: #f2c763;">{{ error }}</span>
+                {% endfor %}
+            </div>
+        </div>
 
-   <div class="row g-3">
-    <div class="col-md-6">
-        {{ form.username.label(class="labe") }}<br>
-        {{ form.username(class="formu") }}<br>
-        {% for error in form.username.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.email.label(class="labe") }}<br>
-        {{ form.email(class="formu") }}<br>
-        {% for error in form.email.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.password.label(class="labe") }}<br>
-        {{ form.password(class="formu") }}<br>
-        {% for error in form.password.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.password_confirm.label(class="labe") }}<br>
-        {{ form.password_confirm(class="formu") }}<br>
-        {% for error in form.password_confirm.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.name.label(class="labe") }}<br>
-        {{ form.name(class="formu") }}<br>
-        {% for error in form.name.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.lastname.label(class="labe") }}<br>
-        {{ form.lastname(class="formu") }}<br>
-        {% for error in form.lastname.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.city.label(class="labe") }}<br>
-        {{ form.city(class="formu") }}<br>
-        {% for error in form.city.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.phone.label(class="labe") }}<br>
-        {{ form.phone(class="formu") }}<br>
-        {% for error in form.phone.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.birthday.label(class="labe") }}<br>
-        {{ form.birthday(class='datepicker formu') }}<br>
-        {% for error in form.birthday.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-    <div class="col-md-6">
-        {{ form.bias.label(class="labe") }}<br>
-        {{ form.bias(class="formu") }}<br>
-        {% for error in form.bias.errors %}
-        <span style="color: #f2c763;">{{ error }}</span>
-        {% endfor %}
-    </div>
-  </div>
+            {{ form.submit(class="post-btn") }}
 
-
-
-        {{ form.submit(class="btnsb") }}
-</div>
- 
     </form>
+</div>
 {% endblock %}
--->

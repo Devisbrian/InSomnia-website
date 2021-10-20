@@ -31,7 +31,9 @@
     </div>
     <div class="list-users-detail">
         <h5>Bias: </h5>
-        <h4>{{ user.bias }}</h4>
+        {% for biases in user.bias %}
+        <h4>{{ biases.name }}</h4>
+        {% endfor %}
     </div>
     <div class="list-users-detail">
         <h5>Fecha creación: </h5>

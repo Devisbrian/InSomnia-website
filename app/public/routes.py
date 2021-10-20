@@ -4,7 +4,7 @@ from flask import abort, render_template, request, current_app, redirect, url_fo
 from werkzeug.exceptions import NotFound
 from flask_login import current_user, login_required
 from .forms import CommentForm, ExchangeForm
-from app.models import Post, Comment, PhotocardDb, PhotocardExchange, Album, AlbumType
+from app.models import Post, Comment, PhotocardDb, PhotocardExchange, Album, AlbumType, Members
 from . import public_bp
 
 logger = logging.getLogger(__name__)
@@ -48,18 +48,19 @@ def list_albums():
     albums = Album.get_all()
     return render_template("public/albums.html", albums=albums)
 
-@public_bp.route("/pc/<string:pc_name>/", methods=['GET', 'POST'])
-def show_pcs(pc_name):
-    photocard = PhotocardDb.get_by_pcname(pc_name)
-    if not photocard:
-        logger.info(f'La photocard {pc_name} no existe')
-        abort(404)
-    return render_template("public/photocard_view.html", photocard=photocard)
-
+#@public_bp.route("/pc/<string:pc_name>/", methods=['GET', 'POST'])
+#def show_pcs(pc_name):
+#    photocard = PhotocardDb.get_by_pcname(pc_name)
+#    if not photocard:
+#        logger.info(f'La photocard {pc_name} no existe')
+#        abort(404)
+#    return render_template("public/photocard_view.html", photocard=photocard)
 
 @public_bp.route("/exchange/", methods=['GET', ])
 def show_exchange():
     exchanges = PhotocardExchange.get_all()
+    for exchange in exchanges:
+        print(exchange.user)
     return render_template("public/exchange_view.html", exchanges=exchanges)
 
 @public_bp.route("/exchange/create/", methods=['GET', 'POST'])
@@ -78,6 +79,11 @@ def exchange_form():
     form.pc_type_to.choices = [(pc_type.pc_type, pc_type.pc_type) for pc_type in AlbumType.get_all()]
     form.pc_type_to.choices.insert(0, ("", "Seleccione"))
 
+    form.member_from.choices = [(member.name, member.name) for member in Members.get_all()]
+    form.member_from.choices.insert(0, ("", "Seleccione"))
+    form.member_to.choices = [(member.name, member.name) for member in Members.get_all()]
+    form.member_to.choices.insert(0, ("", "Seleccione"))
+
     if form.validate_on_submit():
         album_from = form.album_from.data
         member_from = form.member_from.data
@@ -87,10 +93,21 @@ def exchange_form():
         pc_type_to = form.pc_type_to.data
 
         # Consultas
-        pc_from = PhotocardDb.get_filtered(album_from, pc_type_from, member_from)
-        pc_to = PhotocardDb.get_filtered(album_to, pc_type_to, member_to)
+        album_f = Album.get_by_album(album_from)
+        album_t = Album.get_by_album(album_to)
+        member_f = Members.get_by_name(member_from)
+        member_t = Members.get_by_name(member_to)
+        pc_type_f = AlbumType.get_by_type(pc_type_from)
+        pc_type_t = AlbumType.get_by_type(pc_type_to)
 
-        exchange = PhotocardExchange(user_id=current_user.id, user_username=current_user.username, pc_id_from=pc_from.id, pc_id_to=pc_to.id, pc_image_name_from=pc_from.pc_image_name, pc_image_name_to=pc_to.pc_image_name, album_from=album_from, member_from=member_from, pc_type_from=pc_type_from, pc_name_from=pc_from.pc_name, album_to=album_to, member_to=member_to, pc_type_to=pc_type_to, pc_name_to=pc_to.pc_name)
+        pc_from = PhotocardDb.get_filtered(album_f.id, pc_type_f.id, member_f.id)
+        pc_to = PhotocardDb.get_filtered(album_t.id, pc_type_t.id, member_t.id)
+
+        exchange = PhotocardExchange(user_id=current_user.id)
+        exchange.pc_from.append(pc_from)
+        exchange.pc_to.append(pc_to)
+        print(exchange.pc_from)
+        print(exchange.pc_to)
         exchange.save()
         logger.info(f'Guardando nueva entrada photocardExchange')
         return redirect(url_for('public.index'))

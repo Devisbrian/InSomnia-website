@@ -4,7 +4,6 @@ from wtforms.fields.html5 import DateField
 from wtforms.validators import DataRequired, Length, URL
 from flask_wtf.file import FileField, FileAllowed
 from wtforms.fields.core import SelectField
-from ..const import MEMBER_LIST
 
 class PostForm(FlaskForm):
     title = StringField('Título', validators=[DataRequired(), Length(max=128)])
@@ -23,7 +22,7 @@ class UserAdminForm(FlaskForm):
     
 class PhotocardDbForm(FlaskForm):
     album = SelectField('Álbum', choices=[], validators=[DataRequired()])
-    member = SelectField('Miembro', choices=MEMBER_LIST, validators=[DataRequired()])
+    member = SelectField('Miembro', choices=[], validators=[DataRequired()])
     pc_type = SelectField('Versión de Photocard', choices=[], validators=[DataRequired()])
     pc_name = StringField('Nombre de Photocard', validators=[DataRequired()])
     photocard_image = FileField('Imagen', validators=[FileAllowed(['jpg', 'png'],'Sólo se permiten imágenes JPG y PNG')])
@@ -42,4 +41,8 @@ class AlbumForm(FlaskForm):
     spotify = StringField('Link a Spotify', validators=[URL(require_tld=True)])
     youtube = StringField('Link a Youtube', validators=[URL(require_tld=True)])
     album_image = FileField('Imagen del álbum', validators=[FileAllowed(['jpg', 'png', 'jpeg'],'Sólo se permiten imágenes JPG y PNG')])
+    submit = SubmitField('Guardar')
+
+class MemberDcForm(FlaskForm):
+    member = StringField('Miembro', validators=[DataRequired()])
     submit = SubmitField('Guardar')

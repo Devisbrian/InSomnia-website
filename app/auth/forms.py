@@ -1,6 +1,6 @@
 from flask import current_app
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField, PasswordField, BooleanField
+from wtforms import StringField, SubmitField, PasswordField, BooleanField, SelectMultipleField
 from wtforms.fields.html5 import DateField
 from wtforms.fields.core import SelectField
 from wtforms.validators import DataRequired, Email, Length, Regexp, EqualTo
@@ -15,7 +15,7 @@ class SignupForm(FlaskForm):
     city = SelectField('Ciudad', choices=[('','Seleccione'),('Bogotá','Bogotá'),('Medellín','Medellín'),('Cali','Cali'),('Barranquilla','Barranquilla'),('Cartagena','Cartagena'),('Otra','Otra')], validators=[DataRequired()])
     phone = StringField('Celular', validators=[DataRequired(), Length(min=10,max=10,message="El número de celular debe ser de 10 dígitos")])
     birthday = DateField('Fecha de nacimiento', format='%Y-%m-%d', validators=[DataRequired()])
-    bias = SelectField('Bias', choices=[('','Seleccione'),('JiU','JiU'),('SuA','SuA'),('Siyeon','Siyeon'),('Handong','Handong'),('Yoohyeon','Yoohyeon'),('Dami','Dami'),('Gahyeon','Gahyeon')] , validators=[DataRequired()])
+    bias = SelectMultipleField('Bias', choices=[], validators=[DataRequired()])
     submit = SubmitField('Registrarse')
 
 
