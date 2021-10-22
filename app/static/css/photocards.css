@@ -61,7 +61,11 @@
 .exchange-item {
     background-color: rgba(121, 121, 121, 0.15);
     border-radius: 15px;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
+}
+
+.exchange-item hr {
+    margin: 10px 0;
 }
 
 .exchange-item h3{
@@ -70,15 +74,37 @@
     font-size: 150%;
 }
 
+.exchange-item p{
+    font-size: 70%;
+    text-align: end;
+    padding-right: 10px;
+}
+
 .exchange-item .exchange-date {
     font-weight: bold;
     color:#8a2a2b;
     text-align: center;
+    margin-bottom: 10px;
 }
 
 .exchange-item-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 0.7fr 0.5fr 0.7fr 1fr;
+}
+
+.exchange-item-grid .tengo h5,
+.exchange-item-grid .quiero h5 {
+    color:#f2c763;
+    font-size: 15px;
+    margin: 5px 0;
+}
+
+.exchange-item-grid .info {
+    align-self: center;
+}
+.exchange-item-grid .info h5 {
+    padding-left: 5px;
+    margin: 5px 0;
 }
 
 .exchange-item-grid .icono {

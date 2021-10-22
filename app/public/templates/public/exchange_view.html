@@ -1,6 +1,6 @@
 {% extends "base_template.html" %}
 
-{% block title %}  {% endblock %}
+{% block title %} Intercambios {% endblock %}
 
 {% block content %}
 
@@ -25,17 +25,13 @@
         {% for exchange in exchanges %}
 
         <div class="exchange-item">
-            
-            <h3>{{ exchange.user.username }}</h3> 
-            
-            <p class="exchange-date">{{ exchange.created|datetime }}</p>
+
             {% for pc in exchange.pc_from %}
             {% for pc2 in exchange.pc_to %}
             <div class="exchange-item-grid">
 
                 <div class="tengo">
                     <h5>Tengo</h5>
-                    <p>Álbum: {{ pc.album.album }}</p>
                     <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=pc.pc_image_name) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </div>
 
@@ -47,14 +43,22 @@
 
                 <div class="quiero">
                     <h5>Quiero</h5>
-                    <p>Álbum: {{ pc2.album.album }}</p>
                     <img class="bd-placeholder-img photocards" src="{{ url_for('media_photocards', filename=pc2.pc_image_name) }}" width="100px" height="150px" role="img" aria-label="Placeholder: Image cap" preserveAspectRatio="xMidYMid slice" focusable="false">
                 </div>
-            
+                <div class="info">
+                    <h5>Usuario:</h5>
+                    {{ exchange.user.username }}
+                    <h5>Ciudad:</h5>
+                    {{ exchange.user.city }}
+                    <h5>Álbum:</h5>
+                    {{ pc.album.album }}
+                </div>
             </div>
             {% endfor %}
             {% endfor %}
+            
             <hr>
+            <p>{{ exchange.created|datetime }}</p>
         </div>
         {% endfor %}
     </div>    

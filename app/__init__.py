@@ -69,6 +69,10 @@ def register_error_handlers(app):
     @app.errorhandler(401)
     def error_404_handler(e):
         return render_template('401.html'), 401
+
+    @app.errorhandler(403)
+    def error_403_handler(e):
+        return render_template('403.html'), 403
     
 def configure_logging(app):
 

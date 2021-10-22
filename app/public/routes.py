@@ -5,6 +5,7 @@ from werkzeug.exceptions import NotFound
 from flask_login import current_user, login_required
 from .forms import CommentForm, ExchangeForm
 from app.models import Post, Comment, PhotocardDb, PhotocardExchange, Album, AlbumType, Members
+from app.auth.decorators import email_confirm_required
 from . import public_bp
 
 logger = logging.getLogger(__name__)
@@ -17,7 +18,6 @@ def index():
     post_pagination = Post.all_paginated(page, per_page)
     
     return render_template("public/index.html", post_pagination=post_pagination)
-
 
 @public_bp.route("/p/<string:slug>/", methods=['GET', 'POST'])
 def show_post(slug):
@@ -48,23 +48,14 @@ def list_albums():
     albums = Album.get_all()
     return render_template("public/albums.html", albums=albums)
 
-#@public_bp.route("/pc/<string:pc_name>/", methods=['GET', 'POST'])
-#def show_pcs(pc_name):
-#    photocard = PhotocardDb.get_by_pcname(pc_name)
-#    if not photocard:
-#        logger.info(f'La photocard {pc_name} no existe')
-#        abort(404)
-#    return render_template("public/photocard_view.html", photocard=photocard)
-
 @public_bp.route("/exchange/", methods=['GET', ])
 def show_exchange():
     exchanges = PhotocardExchange.get_all()
-    for exchange in exchanges:
-        print(exchange.user)
     return render_template("public/exchange_view.html", exchanges=exchanges)
 
 @public_bp.route("/exchange/create/", methods=['GET', 'POST'])
 @login_required
+@email_confirm_required
 def exchange_form():
     # Crea un nuevo post
     form = ExchangeForm()

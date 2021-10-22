@@ -21,3 +21,11 @@ def staff_required(f):
         return f(*args, **kws)
     return decorated_function
 
+def email_confirm_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kws):
+        confirm = getattr(current_user, 'confirm', False)
+        if not confirm:
+            abort(403)
+        return f(*args, **kws)
+    return decorated_function
