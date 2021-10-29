@@ -4,6 +4,11 @@ import datetime
 
 from app import db
 
+user_exchange_interest = db.Table('user_exchange_interest', 
+    db.Column('user_id', db.Integer, db.ForeignKey('blog_user.id')),
+    db.Column('pc_exchange_id', db.Integer, db.ForeignKey('photocard_exchange.id')),
+)
+
 class User(db.Model, UserMixin):
 
     __tablename__ = 'blog_user'
@@ -14,7 +19,7 @@ class User(db.Model, UserMixin):
     name = db.Column(db.String(80), nullable=False)
     lastname = db.Column(db.String(80), nullable=False)
     email = db.Column(db.String(256), unique=True, nullable=False)
-    city = db.Column(db.String(80))
+    city_id = db.Column(db.Integer, db.ForeignKey('cities.id', ondelete='SET NULL'))
     phone = db.Column(db.String(15))
     birthday = db.Column(db.Date)
     is_admin = db.Column(db.Boolean, default=False)
@@ -22,6 +27,7 @@ class User(db.Model, UserMixin):
     confirm = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(128), nullable=False)
     exchange = db.relationship('PhotocardExchange', backref=db.backref('user', lazy=True))
+    exchange_interested = db.relationship('PhotocardExchange', secondary=user_exchange_interest, backref=db.backref('users_interested', lazy='dynamic'))
 
     def __repr__(self):
         return f'<User {self.username}>'
@@ -57,3 +63,33 @@ class User(db.Model, UserMixin):
     @staticmethod
     def get_by_username(username):
         return User.query.filter(User.username.ilike("%"+username+"%")).first()
+
+class Cities(db.Model):
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(50), unique=True, nullable=False)
+    users = db.relationship('User', backref=db.backref('city', lazy=True))
+
+    def __repr__(self):
+        return f'<City {self.name}>'
+
+    def save(self):
+        if not self.id:
+            db.session.add(self)
+        db.session.commit()
+        
+    def delete(self):
+        db.session.delete(self)
+        db.session.commit()
+
+    @staticmethod
+    def get_all():
+        return Cities.query.all()
+
+    @staticmethod
+    def get_by_id(id):
+        return Cities.query.get(id)
+
+    @staticmethod
+    def get_by_name(name):
+        return Cities.query.filter_by(name=name).first()

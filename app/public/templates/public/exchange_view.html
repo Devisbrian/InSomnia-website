@@ -23,9 +23,7 @@
     <div class="exchange-grid">
 
         {% for exchange in exchanges %}
-
         <div class="exchange-item">
-
             {% for pc in exchange.pc_from %}
             {% for pc2 in exchange.pc_to %}
             <div class="exchange-item-grid">
@@ -49,7 +47,7 @@
                     <h5>Usuario:</h5>
                     {{ exchange.user.username }}
                     <h5>Ciudad:</h5>
-                    {{ exchange.user.city }}
+                    {{ exchange.user.city.name }}
                     <h5>Álbum:</h5>
                     {{ pc.album.album }}
                 </div>
@@ -58,9 +56,58 @@
             {% endfor %}
             
             <hr>
-            <p>{{ exchange.created|datetime }}</p>
+            <div class="interested-btn">
+
+                {% if current_user.id != exchange.user.id %}
+                    {% set count = namespace(a=0) %}
+                    {% for interested in current_user.exchange_interested %}
+                        {% if interested.id == exchange.id %}
+                        <a href="{{ url_for('public.not_interested_exchange', user_id=current_user.id, exchange_id=exchange.id) }}">Ya no me interesa</a>
+                        {% set count.a = count.a + 1 %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if count.a == 0 %}
+                        <a href="{{ url_for('public.interested_exchange', user_id=current_user.id, exchange_id=exchange.id) }}">Me interesa</a>
+                    {% endif %}
+                {% else %}
+                    <a href="#" onclick="interestedFunction('{{ exchange.id }}')">Ver interesados</a>
+                {% endif %}
+                    <p>{{ exchange.created|datetime }}</p>
+            </div>
+            
         </div>
         {% endfor %}
-    </div>    
+    </div>
 
+    <!-- LISTA DE INTERESADOS EN POST -->
+    <div id="exchangeInterested" class="modal">
+        <div class="modal-content-interested animate">
+            <div class="closecontainer">
+                <span onclick="document.getElementById('exchangeInterested').style.display='none'" class="close" title="Cerrar">&times;</span>
+            </div>
+            <h3>Usuarios interesados</h3>
+            <div id="interestedID" class="interested-grid"></div>
+        </div>
+    </div>
+
+    <script>
+        function interestedFunction(exchangeId) {
+            document.getElementById('exchangeInterested').style.display='block';
+
+            fetch('/list_interested/' + exchangeId).then(function(response) {
+                response.json().then(function(data) {
+                    let liHTML = '';
+                    for (let user of data.users) {
+                        liHTML+= '<div class="item-left"><p>Usuario:</p></div>';
+                        liHTML+= '<div class="item-right"><p>' + user.username + '</p></div>';
+                        liHTML+= '<div class="item-left"><p>Ciudad:</p></div>';
+                        liHTML+= '<div class="item-right"><p>' + user.city + '</p></div>';
+                        liHTML+= '<div class="item-left"><p>Contacto:</p></div>';
+                        liHTML+= '<div class="item-right"><p>' + user.tel + '</p><br></div>';
+                    }
+                    document.getElementById("interestedID").innerHTML = liHTML
+                });
+            });
+        }
+    </script>
 {% endblock %}

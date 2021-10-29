@@ -67,21 +67,22 @@
                 <input type="text" placeholder="Ingrese apellidos" name="lastname" required>
               </div>
               <div>
-                <label for="city"><b>Ciudad</b></label>
-                <input type="text" placeholder="Ingrese ciudad" name="city" required>
+                <label for="birthday"><b>Fecha de nacimiento</b></label>
+                <input type="date" placeholder="Ingrese fecha de nacimiento" name="birthday" required>
               </div>
               <div>
                 <label for="phone"><b>Celular</b></label>
                 <input type="text" placeholder="Ingrese número de celular" name="phone" required>
               </div>
               <div>
-                <label for="birthday"><b>Fecha de nacimiento</b></label>
-                <input type="date" placeholder="Ingrese fecha de nacimiento" name="birthday" required>
+                <label for="city"><b>Ciudad</b></label>
+                <select id="city" name="city" required=""></select>
               </div>
               <div>
                 <label for="bias"><b>Bias</b></label>
-                <input type="text" placeholder="Ingrese bias" name="bias" required>
+                <select id="bias" multiple name="bias" required=""></select>
               </div>
+              
           </div>
         
             <div class="btn-grid">
@@ -98,3 +99,28 @@
       </div>
     </form>
 </div>
+
+<script>
+  let bias_select = document.getElementById('bias');
+  let city_select = document.getElementById('city');
+
+  fetch('/member/').then(function(response) {
+      response.json().then(function(data) {
+          let optionHTML = '';
+          for (let member of data.members) {
+              optionHTML += '<option value="' + member.value + '">' + member.name + '</option>';
+          }
+              bias_select.innerHTML = optionHTML;
+      });
+  });
+
+  fetch('/city/').then(function(response) {
+      response.json().then(function(data) {
+          let optionHTML = '';
+          for (let city of data.cities) {
+              optionHTML += '<option value="' + city.value + '">' + city.name + '</option>';
+          }
+              city_select.innerHTML = optionHTML;
+      });
+  });
+</script>

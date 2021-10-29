@@ -2,14 +2,14 @@ import logging
 from flask import render_template, redirect, url_for, abort, request, current_app, jsonify
 from flask_login import login_required, current_user
 from app.auth.decorators import admin_required, staff_required
-from app.auth.models import User
+from app.auth.models import User, Cities
 
 import os
 from werkzeug.utils import secure_filename
 
 from app.models import Post, PhotocardDb, AlbumType, Album, Members
 from . import admin_bp
-from .forms import PostForm, UserAdminForm, PhotocardDbForm, AlbumTypeForm, AlbumForm, MemberDcForm
+from .forms import CityForm, PostForm, UserAdminForm, PhotocardDbForm, AlbumTypeForm, AlbumForm, MemberDcForm, CityForm
 
 logger = logging.getLogger(__name__)
 
@@ -106,6 +106,7 @@ def list_users():
 def update_user_form(user_id):
     # Aquí entra para actualizar un usuario existente
     user = User.get_by_id(user_id)
+    city = Cities.get_by_id(user.id)
     if user is None:
         logger.info(f'El usuario {user_id} no existe')
         abort(404)
@@ -119,7 +120,7 @@ def update_user_form(user_id):
         user.save()
         logger.info(f'Guardando el usuario {user_id}')
         return redirect(url_for('admin.list_users'))
-    return render_template("admin/user_form.html", form=form, user=user)
+    return render_template("admin/user_form.html", form=form, user=user, city=city)
 
 @admin_bp.route("/admin/user/delete/<int:user_id>/", methods=['POST', ])
 @login_required
@@ -365,6 +366,17 @@ def dc_members():
         memberdb.save()
         return redirect(url_for('admin.dc_members'))
     return render_template('admin/dcmembers_form.html', form=form)
+
+@admin_bp.route("/admin/add-city/", methods=['POST', 'GET'])
+def add_city():
+    form = CityForm()
+    if form.validate_on_submit():
+        name = form.name.data
+        city = Cities(name=name)
+        city.save()
+        return redirect(url_for('admin.add_city'))
+    return render_template('admin/city_form.html', form=form)
+
 
 # Jsonify
 @admin_bp.route("/pc_type/<album>")

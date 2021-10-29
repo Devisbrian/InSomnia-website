@@ -46,3 +46,7 @@ class AlbumForm(FlaskForm):
 class MemberDcForm(FlaskForm):
     member = StringField('Miembro', validators=[DataRequired()])
     submit = SubmitField('Guardar')
+
+class CityForm(FlaskForm):
+    name = StringField('Ciudad', validators=[DataRequired()])
+    submit = SubmitField('Guardar')

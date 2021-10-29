@@ -39,7 +39,7 @@
                     <img src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}">
                 </a>
 
-                    <p class="pc-member">{{ photocard.member }}</p>
+                    <p class="pc-member">{{ photocard.member.name }}</p>
           </div>
             {% endif %}
             {% endfor %}

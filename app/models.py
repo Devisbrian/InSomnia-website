@@ -118,6 +118,10 @@ class Members(db.Model):
         db.session.commit()
 
     @staticmethod
+    def get_by_id(id):
+        return Members.query.get(id)
+
+    @staticmethod
     def get_all():
         return Members.query.all()
 
@@ -257,11 +261,10 @@ class PhotocardDb(db.Model):
     def get_filtered(album_id, pc_type_id, member_id):
         return PhotocardDb.query.filter_by(album_id=album_id).filter_by(pc_type_id=pc_type_id).filter_by(member_id=member_id).first()
 
-
 class PhotocardExchange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('blog_user.id', ondelete='CASCADE'))
+    user_id = db.Column(db.Integer, db.ForeignKey('blog_user.id', ondelete='CASCADE')) 
 
     def __repr__(self):
         return f'<PhotocardExchange {self.id}>'

@@ -1,10 +1,11 @@
 import logging
 
-from flask import abort, render_template, request, current_app, redirect, url_for
+from flask import abort, render_template, request, current_app, redirect, url_for, jsonify
 from werkzeug.exceptions import NotFound
 from flask_login import current_user, login_required
 from .forms import CommentForm, ExchangeForm
 from app.models import Post, Comment, PhotocardDb, PhotocardExchange, Album, AlbumType, Members
+from app.auth.models import User
 from app.auth.decorators import email_confirm_required
 from . import public_bp
 
@@ -103,3 +104,34 @@ def exchange_form():
         logger.info(f'Guardando nueva entrada photocardExchange')
         return redirect(url_for('public.index'))
     return render_template("public/post_exchange.html", form=form)
+
+@public_bp.route("/exchange/me-interesa/<exchange_id>/<user_id>", methods=['GET', 'POST'])
+def interested_exchange(user_id, exchange_id):
+    user = User.get_by_id(user_id)
+    exchange = PhotocardExchange.get_by_id(exchange_id)
+    exchange.users_interested.append(user)
+    exchange.save()
+    return redirect(url_for('public.show_exchange'))
+
+@public_bp.route("/exchange/no-me-interesa/<exchange_id>/<user_id>", methods=['GET', 'POST'])
+def not_interested_exchange(user_id, exchange_id):
+    user = User.get_by_id(user_id)
+    exchange = PhotocardExchange.get_by_id(exchange_id)
+    exchange.users_interested.remove(user)
+    exchange.save()
+    return redirect(url_for('public.show_exchange'))
+
+@public_bp.route("/list_interested/<exchangeId>/")
+def list_interested(exchangeId):
+    exchanges = PhotocardExchange.get_all()
+    usersArray = []
+    for exchange in exchanges:
+        for user in exchange.users_interested:
+            if (exchange.id == int(exchangeId)):
+                usersObj = {}
+                usersObj['username'] = user.username
+                usersObj['city'] = user.city.name
+                usersObj['tel'] = str(user.phone)
+                usersArray.append(usersObj)
+    print(usersArray)
+    return jsonify({'users' : usersArray})

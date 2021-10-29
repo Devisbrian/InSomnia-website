@@ -1,0 +1,62 @@
+.modal .closecontainer {
+    text-align: center;
+    margin: 10px 0 60px 0;
+    position: relative;
+
+}
+
+.modal-content-interested {
+    background-color: #101820;
+    opacity: 0.9;
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 30%; /* Could be more or less, depending on screen size */
+}
+
+.modal h3 {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.interested-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+}
+  
+.interested-grid .item-left {
+    justify-self: end;
+}
+
+.interested-btn {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    margin-bottom: 10px;
+}
+
+.interested-btn a {
+    font-size: 14px;
+    color:rgb(15, 15, 15);
+    padding: 2px 0;
+    display: inline-block;
+    margin-left: 12px;
+    background-color: #bbbbbb;
+    border-radius: 5px;
+    text-align: center;
+    width: 40%;
+    height: 90%;
+}
+  
+.interested-btn a:hover {
+    color:azure;
+    background-color: rgba(121, 121, 121, 0.8);
+    box-shadow: 1px 1px 4px #111021;
+    border-radius: 5px;
+}
+
+.interested-btn p {
+    font-size: 70%;
+    text-align: end;
+    padding-right: 10px;
+    align-self: center;
+}

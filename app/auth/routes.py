@@ -1,5 +1,4 @@
-from flask import render_template, redirect, url_for, request, current_app, flash
-from flask.json import dumps
+from flask import render_template, redirect, url_for, request, current_app, flash, jsonify
 from app.common.mail import send_email
 from flask_login import current_user, login_user, logout_user
 from werkzeug.urls import url_parse
@@ -7,8 +6,7 @@ from itsdangerous import SignatureExpired
 
 from app import login_manager, urltimed
 from . import auth_bp
-from .forms import SignupForm, LoginForm
-from .models import User
+from .models import User, Cities
 from app.models import Members
 import logging
 
@@ -33,37 +31,23 @@ def email_confirm(token):
 def show_signup_form():
     if current_user.is_authenticated:
         return redirect(url_for('public.index'))
-    form = SignupForm()
-    form.bias.choices = [(member.name, member.name) for member in Members.get_all()]
-    form.bias.choices.insert(0, ("", "Seleccione una o más"))
     error = None
-    #if request.method == 'POST': # PARA MODAL SIGNUP
-        #username = request.form.get('uname')
-        #name = request.form.get('name')
-        #lastname = request.form.get('lastname')
-        #city = request.form.get('city')
-        #phone = request.form.get('phone')
-        #birthday = request.form.get('birthday')
-        #bias = request.form.get('bias')
-        #email = request.form.get('email')
-        #password = request.form.get('psw')
-        #password_confirm = request.form.get('psw_c')
-    if form.validate_on_submit():
-        username = form.username.data
-        name = form.name.data
-        lastname = form.lastname.data
-        city = form.city.data
-        phone = form.phone.data
-        birthday = form.birthday.data
-        bias = form.bias.data
-        email = form.email.data
-        password = form.password.data
-        password_confirm = form.password_confirm.data
+    if request.method == 'POST': # PARA MODAL SIGNUP
+        username = request.form.get('uname')
+        name = request.form.get('name')
+        lastname = request.form.get('lastname')
+        city = request.form.get('city')
+        phone = request.form.get('phone')
+        birthday = request.form.get('birthday')
+        bias = request.form.getlist('bias')
+        email = request.form.get('email')
+        password = request.form.get('psw')
+        password_confirm = request.form.get('psw_c')
 
+        cityDb = Cities.get_by_id(city)
         # Comprobamos que no hay ya un usuario con ese email
         user = User.get_by_email(email)
         user2 = User.get_by_username(username)
-        
         
         if user is not None:
             flash('El email digitado ya está siendo utilizado por otra persona')
@@ -71,11 +55,11 @@ def show_signup_form():
             flash('El nombre de usuario digitado ya está siendo utilizado por otra persona')
         else:
             # Creamos el usuario y lo guardamos
-            user = User(username=username, name=name, lastname=lastname, email=email, city=city, phone=phone, birthday=birthday)
+            user = User(username=username, name=name, lastname=lastname, email=email, city=cityDb, phone=phone, birthday=birthday)
             user.set_password(password)
             # Busqueda de bias
             for biases in bias:
-                bias_for_user = Members.get_by_name(biases)
+                bias_for_user = Members.get_by_id(biases)
                 user.bias.append(bias_for_user)
             user.save()
             # Crear token de verificación de correo
@@ -94,6 +78,7 @@ def show_signup_form():
                 next_page = url_for('public.index')
             return redirect(next_page)
     return render_template('auth/signup_form.html', form=form)
+
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
@@ -128,3 +113,27 @@ def logout():
 @login_manager.user_loader
 def load_user(user_id):
     return User.get_by_id(int(user_id))
+
+# Jsonify
+
+@auth_bp.route("/member/")
+def member():
+    members = Members.get_all()
+    memberArray = []
+    for member in members:
+        memberObj = {}
+        memberObj['value'] = member.id
+        memberObj['name'] = member.name
+        memberArray.append(memberObj)
+    return jsonify({'members' : memberArray})
+
+@auth_bp.route("/city/")
+def city():
+    cities = Cities.get_all()
+    cityArray = []
+    for city in cities:
+        cityObj = {}
+        cityObj['value'] = city.id
+        cityObj['name'] = city.name
+        cityArray.append(cityObj)
+    return jsonify({'cities' : cityArray})

@@ -1,0 +1,33 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+        Nueva ciudad
+{% endblock %}
+
+{% block content %}
+
+<h1>Agregar una ciudad</h1>
+<hr>
+
+<div class="form-container">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+
+    <div class="form-1c-grid">
+
+        <div class="form-item">
+            {{ form.name.label() }}
+            {{ form.name() }}<br>
+            {% for error in form.name.errors %}
+            <span style="color: red;">{{ error }}</span>
+            {% endfor %}
+        </div>       
+    </div>
+    
+    <div>
+        {{ form.submit(class="post-btn") }}
+    </div>
+    </form>
+</div>
+
+{% endblock %}
