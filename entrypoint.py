@@ -28,3 +28,10 @@ def media_albums(filename):
         app.config['MEDIA_DIR'],
         app.config['ALBUMS_IMAGES_DIR'])
     return send_from_directory(dir_path, filename)
+
+@app.route('/media/fanclub/events/<filename>')
+def media_galery(filename):
+    dir_path = os.path.join(
+        app.config['MEDIA_DIR'],
+        app.config['EVENTS_DIR'])
+    return send_from_directory(dir_path, filename)

@@ -1,0 +1,66 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    {% if form.name.data %}
+        {{ form.name.data }}
+    {% else %}
+        Nueva entrada
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+
+<h1>Crear galería de evento</h1>
+<hr>
+
+<div class="form-container">
+    <form action="" method="post" enctype="multipart/form-data" novalidate>
+        {{ form.hidden_tag() }}
+
+        <div class="form-2c-grid">
+            
+            <div class="form-item">
+                {{ form.name.label() }}
+                {{ form.name() }}<br>
+                {% for error in form.name.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.date.label() }}
+                {{ form.date() }}<br>
+                {% for error in form.date.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.event_image.label() }}
+                <div class="file-select" id="src-file1" >
+                {{ form.event_image() }}<br>
+                </div>
+                {% for error in form.event_image.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            <div class="form-item">
+                {{ form.gallery_images.label() }}
+                <div class="multiple-file-select" id="src-file1" >
+                {{ form.gallery_images() }}<br>
+                </div>
+                {% for error in form.gallery_images.errors %}
+                <span style="color: red;">{{ error }}</span>
+                {% endfor %}
+            </div>
+            
+        </div>
+        {{ form.submit(class="post-btn") }}
+    </form>
+
+    {% if event %}
+        <form action="{{ url_for('fanclub.delete_fc_event', event_id=event.id) }}" method="post" novalidate>
+            <input class="post-btn" type="submit" value="Eliminar" />
+        </form>
+    {% endif %}
+</div>
+
+{% endblock %}

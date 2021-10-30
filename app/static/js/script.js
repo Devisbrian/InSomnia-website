@@ -19,6 +19,18 @@ function actualizarInputFile() {
 }
 document.querySelectorAll(".file-select input").forEach((ele)=>ele.addEventListener('change', actualizarInputFile));
 
+/* */ 
+function actualizarInputFile2() {
+  var filename = "'" + this.value.replace(/^.*[\\\/]/, '') + "'";
+  if (filename === "''") {
+        this.parentElement.style.setProperty('--fn', "'Seleccionar archivo'");
+  } else {
+    this.parentElement.style.setProperty('--fn', "'Archivos seleccionados'");
+  }
+}
+document.querySelectorAll(".multiple-file-select input").forEach((ele)=>ele.addEventListener('change', actualizarInputFile2));
+
+
 
 document.querySelector('.menu-btn').addEventListener('click', () => {
   document.querySelector('.nav-menu').classList.toggle('show');

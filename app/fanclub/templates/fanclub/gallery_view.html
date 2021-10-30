@@ -1,0 +1,28 @@
+{% extends "base_template.html" %}
+
+{% block title %}{{ event.name }}{% endblock %}
+
+{% block content %}
+
+<h1>{{ event.name }}</h1>
+<hr>
+
+<div class="edit">
+    {% if current_user.is_staff %}
+        <a href="{{ url_for('fanclub.edit_fc_photos', event_id=event.id) }}">
+        <button type="button" class="btn btn-sm btn-outline-secondary">Editar</button>
+        </a>
+    {% endif %}
+</div>
+
+<div class="gallery-img-container">
+    {% for photo in gallery %}
+        <img src="{{ url_for('media_galery', filename=photo.image_name) }}" alt="{{ photo.image_name }}">
+        {% if current_user.is_staff %}
+        <a class="img-button" href="{{ url_for('fanclub.delete_fc_photo', photo_id=photo.id) }}">Eliminar</a>
+        {% endif %}
+    {% endfor %}
+</div>
+
+
+{% endblock %}
