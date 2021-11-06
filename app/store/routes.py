@@ -58,9 +58,12 @@ def cart_view():
 
     total = 0
     total_quantity = 0
-    for product in products:
-        total += product[4]
-        total_quantity += product[2]
+    try:
+        for product in products:
+            total += product[4]
+            total_quantity += product[2]
+    except:
+        None
     return render_template("store/cart_view.html", products=products, total=total, total_quantity=total_quantity) 
 
 @store_bp.route("/store/cart/add/<int:product_id>", methods=['GET', 'POST'])
