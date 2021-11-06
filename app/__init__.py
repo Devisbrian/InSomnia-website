@@ -48,6 +48,9 @@ def create_app(settings_module):
 
     from .fanclub import fanclub_bp
     app.register_blueprint(fanclub_bp)
+
+    from .store import store_bp
+    app.register_blueprint(store_bp)
     
     # Custom error handlers
     register_error_handlers(app)

@@ -1,0 +1,50 @@
+{% extends "base_template.html" %}
+
+{% block title %}
+    Productos
+{% endblock %}
+
+{% block content %}
+
+<h1 class="title">Lista de productos</h1>
+<hr>
+
+{% if current_user.is_admin %}
+        <a class="add-album" href="{{ url_for('store.add_product') }}">
+            <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="40" height="40" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
+                <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+                <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
+            </svg>
+        </a>
+{% endif %}
+
+<div class="product-cards">
+    {% for product in products %}
+    <div class="product-card-item">
+        <div class="product-card-body">
+            <img src="{{ url_for('media_products', filename=product.image_name) }}" alt="{{ product.image_name }}">
+            <div class="product-card-text">
+                <h4>{{ product.name }}</h4>
+                <h4>Stock: {{ product.stock }}</h4>
+                <h3>${{ product.price }}</h3>
+                <h4>Fanmade: {% if product.fanmade %} Sí {% else %} No {% endif %}</h4>
+            </div>
+            <div class="product-btn-grid">
+                <div class="btn1"><button class="product-btn-1">Detalles</button></div>
+                <div class="btn2">
+                    <form action="{{ url_for('store.addto_cart', product_id=product.id) }}" method="post">
+                        <div class="addcart-grid">
+                            <input type="number" name="addquantity" id="addquantity" value="1" min="1" max="{{ product.stock }}">
+                            <button class="product-btn-2"><a>Agregar</a></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% else %}
+        No hay productos a la venta
+    {% endfor %}
+</div>
+
+{% endblock %}

@@ -43,7 +43,7 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
     border-radius: 5px;
-  }
+}
 
 .form-container form label{
     color:#f2c763;
@@ -110,7 +110,7 @@
 .multiple-file-select input[type="file"] {
     opacity: 0;
     width:200px;
-    height: 50px;
+    height: 5px;
     display: inline-block;
 }
 
