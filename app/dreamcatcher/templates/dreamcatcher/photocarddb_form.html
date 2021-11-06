@@ -69,7 +69,7 @@
         </form>
 
             {% if photocard %}
-                <form action="{{ url_for('admin.delete_photocard', photocard_id=photocard.id) }}" method="post" novalidate>
+                <form action="{{ url_for('dreamcatcher.delete_photocard', photocard_id=photocard.id) }}" method="post" novalidate>
                     <input class="post-btn" type="submit" value="Eliminar" />
                 </form>
             {% endif %}

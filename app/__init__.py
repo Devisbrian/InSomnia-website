@@ -46,6 +46,9 @@ def create_app(settings_module):
     from .public import public_bp
     app.register_blueprint(public_bp)
 
+    from .dreamcatcher import dreamcatcher_bp
+    app.register_blueprint(dreamcatcher_bp)
+
     from .fanclub import fanclub_bp
     app.register_blueprint(fanclub_bp)
 

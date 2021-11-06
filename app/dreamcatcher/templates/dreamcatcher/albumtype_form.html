@@ -42,7 +42,7 @@
         </form>
         
         {% if album_type %}
-        <form action="{{ url_for('admin.delete_albumtype', album_type_id=album_type.id) }}" method="post" novalidate>
+        <form action="{{ url_for('dreamcatcher.delete_albumtype', album_type_id=album_type.id) }}" method="post" novalidate>
             <input class="post-btn" type="submit" value="Eliminar" />
         </form>
         {% endif %}

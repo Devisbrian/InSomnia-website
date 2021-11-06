@@ -9,7 +9,7 @@
     <h1 class="pc-list">Listado de photocards</h1>
     <hr>
     {% if current_user.is_admin %}
-        <a class="pc-add" href="{{ url_for('admin.photocarddb_add') }}">
+        <a class="pc-add" href="{{ url_for('dreamcatcher.photocarddb_add') }}">
             <svg style="color:white;" xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-plus-circle" viewBox="0 0 16 16">
                 <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
                 <path d="M8 4a.5.5 0 0 1 .5.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3A.5.5 0 0 1 8 4z"/>
@@ -34,7 +34,7 @@
             {% if photocard.pc_type == pc_type.pc_type %}
           <div class="pc-item">
                 {% if current_user.is_admin %}
-                <a href="{{ url_for('admin.update_photocard_form', pc_id=photocard.id) }}">
+                <a href="{{ url_for('dreamcatcher.update_photocard_form', pc_id=photocard.id) }}">
                 {% endif %}
                     <img src="{{ url_for('media_photocards', filename=photocard.pc_image_name) }}">
                 </a>

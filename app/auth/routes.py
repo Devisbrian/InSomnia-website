@@ -7,7 +7,7 @@ from itsdangerous import SignatureExpired
 from app import login_manager, urltimed
 from . import auth_bp
 from .models import User, Cities
-from app.models import Members
+from app.dreamcatcher.models import Members
 import logging
 
 logger = logging.getLogger(__name__)

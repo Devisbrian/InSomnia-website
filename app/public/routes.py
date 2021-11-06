@@ -4,7 +4,8 @@ from flask import abort, render_template, request, current_app, redirect, url_fo
 from werkzeug.exceptions import NotFound
 from flask_login import current_user, login_required
 from .forms import CommentForm, ExchangeForm
-from app.models import Post, Comment, PhotocardDb, PhotocardExchange, Album, AlbumType, Members
+from app.models import Post, Comment
+from app.dreamcatcher.models import PhotocardDb, PhotocardExchange, Album, AlbumType, Members
 from app.auth.models import User
 from app.auth.decorators import email_confirm_required
 from . import public_bp
