@@ -485,6 +485,40 @@ img.photocards {
   box-shadow: 2px 2px 3px #8a2a2b;
 }
 
+.flash-container {
+  /* (A1) CENTER ON PAGE */
+  position: fixed;
+  top: 12%; left: 50%;
+  transform: translate(-50%);
+  /* (A2) DIMENSIONS */
+  width: 400px;
+  padding: 10px;
+  /* (A3) COLORS */
+  color: #333;
+  border: 1px solid #c52828;
+  background: #ffebe1;
+  /* (A4) HIDE */
+}
+
+.flash-container h4 {
+  margin-top: 20px;
+}
+
+.flash-container span.close {
+  position: absolute;
+  right: 10px;
+  top: 0;
+  color: #363636;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.flash-container span.close:hover,
+.flash-container span.close:focus {
+  color: #8a2a2b;
+  cursor: pointer;
+}
+
 @media (max-width: 800px) {
 
   body {

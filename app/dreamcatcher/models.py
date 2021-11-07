@@ -175,7 +175,7 @@ class PhotocardDb(db.Model):
 class PhotocardExchange(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     created = db.Column(db.DateTime, default=datetime.datetime.now(datetime.timezone.utc))
-    user_id = db.Column(db.Integer, db.ForeignKey('blog_user.id', ondelete='CASCADE')) 
+    user_id = db.Column(db.Integer, db.ForeignKey('blog_user.id', ondelete='CASCADE'))
 
     def __repr__(self):
         return f'<PhotocardExchange {self.id}>'

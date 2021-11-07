@@ -1,6 +1,6 @@
-from flask import render_template, redirect, url_for, abort, request, current_app, session
-from flask_login import login_required, current_user
-from app.auth.decorators import admin_required, staff_required
+from flask import render_template, redirect, url_for, abort, request, current_app, session, flash
+from flask_login import login_required
+from app.auth.decorators import staff_required
 
 import os
 from werkzeug.utils import secure_filename
@@ -31,17 +31,20 @@ def add_product():
 
         product = Product(name=name,price=price,stock=stock,description=description,fanmade=fanmade, image_name=image_name)
         product.save()
+        flash('¡Yujuuu, has agregado el producto ' + name + ' a la venta!')
         return redirect(url_for('store.list_products'))
     return render_template("store/product_form.html", form=form)
 
 @login_required
 @staff_required
-@store_bp.route("/admin/store/delete/<int:product_id>", methods=["GET", "POST"])
+@store_bp.route("/admin/store/delete/<int:product_id>", methods=["POST", ])
 def delete_product(product_id):
     product = Product.get_by_id(product_id)
     if product is None:
+        flash('¡Oops, parece que ese producto ya no existe')
         abort(404)
     product.delete()
+    flash('¡El producto ' + product.name + ' ha sido borrado!')
     return redirect(url_for('store.list_products'))
 
 @store_bp.route("/store/")
@@ -53,6 +56,8 @@ def list_products():
 def cart_view():
     if not 'products' in session:
         products = None
+        flash('¡Ummm, parece que el carrito de compras está vacío!')
+        flash('¿Qué tal si agregas un producto?')
     else:
         products = session['products']
 
@@ -78,6 +83,7 @@ def addto_cart(product_id):
         products.append(product)
         session['products'] = products
         product = Product.get_by_id(product_id)
+        flash('¡Yeiii, has agregado el producto ' + product_name.name + ' al carrito!')
         return redirect(url_for('store.cart_view'))
     return redirect(url_for('store.list_products'))
 
@@ -86,8 +92,10 @@ def deleteto_cart(product):
     products = session['products']
     if product == "all":
         products.clear()
+        flash('¡Ohhh, has borrado todos los productos del carrito')
     else:
         index = int(product)
         products.pop(index)
+        flash('¡Has borrado un producto del carrito!')
     session['products'] = products
     return redirect(url_for('store.cart_view'))

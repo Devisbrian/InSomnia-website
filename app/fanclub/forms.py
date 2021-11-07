@@ -10,7 +10,7 @@ class EventGalleryForm(FlaskForm):
         FileAllowed(['jpg', 'png', 'jpeg'], 'Sólo se permiten imágenes'), DataRequired()
     ])
     date = DateField('Fecha del evento', format='%Y-%m-%d', validators=[DataRequired()])
-    gallery_images = MultipleFileField('Foto principal', validators=[
+    gallery_images = MultipleFileField('Fotos del evento', validators=[
         FileAllowed(['jpg', 'png', 'jpeg'], 'Sólo se permiten imágenes'), DataRequired()
     ])
     submit = SubmitField('Guardar')

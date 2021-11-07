@@ -54,6 +54,9 @@ def create_app(settings_module):
 
     from .store import store_bp
     app.register_blueprint(store_bp)
+
+    from .profile import profile_bp
+    app.register_blueprint(profile_bp)
     
     # Custom error handlers
     register_error_handlers(app)

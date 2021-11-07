@@ -1,6 +1,7 @@
-from flask import render_template, redirect, url_for, abort, current_app
+from flask import render_template, redirect, url_for, abort, current_app, flash
 from flask_login import login_required
 from app.auth.decorators import staff_required
+import logging
 
 from .models import Events, Gallery
 from .forms import EventGalleryForm
@@ -10,9 +11,11 @@ from werkzeug.utils import secure_filename
 
 from . import fanclub_bp
 
+logger = logging.getLogger(__name__)
+
+@fanclub_bp.route('/admin/fanclub/add-photos/', methods=['GET','POST'])
 @login_required
 @staff_required
-@fanclub_bp.route('/admin/fanclub/add-photos/', methods=['GET','POST'])
 def add_fc_photos():
     form = EventGalleryForm()
     if form.validate_on_submit():
@@ -42,16 +45,18 @@ def add_fc_photos():
                 file.save(file_path)
                 gallery = Gallery(image_name=image_name, event=eventDb)
                 gallery.save()
-        return redirect(url_for('fanclub.add_fc_photos'))
+        flash('¡Yujuuu, has agregado el evento ' + name + ' a la galería!')
+        return redirect(url_for('fanclub.list_gallery'))
     return render_template("fanclub/gallery_form.html", form=form)
 
+@fanclub_bp.route('/admin/fanclub/edit/<int:event_id>', methods=['GET','POST'])
 @login_required
 @staff_required
-@fanclub_bp.route('/admin/fanclub/edit/<int:event_id>', methods=['GET','POST'])
 def edit_fc_photos(event_id):
     event = Events.get_by_id(event_id)
     if event is None:
-        #logger.info(f'El evento no existe')
+        logger.info(f'El evento {event_id} no existe')
+        flash('¡Oops, parece que ese evento no existe!')
         abort(404)
     form = EventGalleryForm(obj=event)
     if form.validate_on_submit():
@@ -78,29 +83,34 @@ def edit_fc_photos(event_id):
                 file.save(file_path)
                 gallery = Gallery(image_name=image_name, event=eventDb)
                 gallery.save()
+        flash('¡Has editado el evento ' + event.name + '!')
         return redirect(url_for('fanclub.list_gallery'))
     return render_template("fanclub/gallery_form.html", form=form, event=event)
 
+@fanclub_bp.route('/admin/fanclub/event/delete/<int:event_id>', methods=['GET','POST'])
 @login_required
 @staff_required
-@fanclub_bp.route('/admin/fanclub/event/delete/<int:event_id>', methods=['GET','POST'])
 def delete_fc_event(event_id):
     event = Events.get_by_id(event_id)
     if event is None:
-        #logger.info(f'El evento {event_id} no existe')
+        logger.info(f'El evento {event_id} no existe')
+        flash('¡Oops, parece que ese evento ya no existe')
         abort(404)
     event.delete()
+    flash('¡El evento ' + event.name + ' ha sido borrado!')
     return redirect(url_for('fanclub.list_gallery'))
 
+@fanclub_bp.route('/admin/fanclub/gallery/delete/<int:photo_id>', methods=['GET','POST'])
 @login_required
 @staff_required
-@fanclub_bp.route('/admin/fanclub/gallery/delete/<int:photo_id>', methods=['GET','POST'])
 def delete_fc_photo(photo_id):
     gallery = Gallery.get_by_id(photo_id)
     if gallery is None:
-        #logger.info(f'El evento {event_id} no existe')
+        logger.info(f'La foto {photo_id} no existe')
+        flash('¡Oops, parece que esa foto ya no existe!')
         abort(404)
     gallery.delete()
+    flash('¡La foto seleccionada ha sido borrada!')
     return redirect(url_for('fanclub.list_gallery'))
 
 @fanclub_bp.route('/fanclub/events-gallery/')

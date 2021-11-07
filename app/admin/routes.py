@@ -1,5 +1,5 @@
 import logging
-from flask import render_template, redirect, url_for, abort, current_app
+from flask import render_template, redirect, url_for, abort, current_app, flash
 from flask_login import login_required, current_user
 from app.auth.decorators import admin_required, staff_required
 from app.auth.models import User, Cities
@@ -43,7 +43,8 @@ def post_form():
         post.image_name = image_name
         post.save()
         logger.info(f'Guardando nuevo post {title}')
-        return redirect(url_for('public.index'))
+        flash('¡Yeiii, se ha creado el nuevo post ' + title + '!')
+        return redirect(url_for('admin.post_form'))
     return render_template("admin/post_form.html", form=form)
 
 
@@ -75,6 +76,7 @@ def update_post_form(post_id):
             post.file.save(file_path)
         post.save()
         logger.info(f'Guardando el post {post_id}')
+        flash('¡Super, has editado el post ' + post.title + '!')
         return redirect(url_for('public.index'))
     return render_template("admin/post_form.html", form=form, post=post)
 
@@ -90,6 +92,7 @@ def delete_post(post_id):
         abort(404)
     post.delete()
     logger.info(f'El post {post_id} ha sido eliminado')
+    flash('¡El post ' + post.title + ' ha sido eliminado!')
     return redirect(url_for('public.index'))
 
 
@@ -119,6 +122,7 @@ def update_user_form(user_id):
         user.is_staff = form.is_staff.data
         user.save()
         logger.info(f'Guardando el usuario {user_id}')
+        flash('¡Has modificado el rol del usuario ' + user.username + '!')
         return redirect(url_for('admin.list_users'))
     return render_template("admin/user_form.html", form=form, user=user, city=city)
 
@@ -131,9 +135,11 @@ def delete_user(user_id):
     user = User.get_by_id(user_id)
     if user is None:
         logger.info(f'El usuario {user_id} no existe')
+        flash('Oops, parece que ese usuario no existe ;)')
         abort(404)
     user.delete()
     logger.info(f'El usuario {user_id} ha sido eliminado')
+    flash('¡Has eliminado al usuario ' + user.username + '!')
     return redirect(url_for('admin.list_users'))
 
 @admin_bp.route("/admin/add-city/", methods=['POST', 'GET'])
@@ -143,6 +149,7 @@ def add_city():
         name = form.name.data
         city = Cities(name=name)
         city.save()
+        flash('¡Qué bien, agregaste la ciudad ' + name + '!')
         return redirect(url_for('admin.add_city'))
     return render_template('admin/city_form.html', form=form)
 

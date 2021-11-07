@@ -1,6 +1,6 @@
 import logging
 
-from flask import abort, render_template, request, current_app, redirect, url_for, jsonify
+from flask import abort, render_template, request, current_app, redirect, url_for, jsonify, flash
 from werkzeug.exceptions import NotFound
 from flask_login import current_user, login_required
 from .forms import CommentForm, ExchangeForm
@@ -103,7 +103,9 @@ def exchange_form():
         print(exchange.pc_to)
         exchange.save()
         logger.info(f'Guardando nueva entrada photocardExchange')
-        return redirect(url_for('public.index'))
+        flash('¡Yujuuu, has creado un nuevo trade!')
+        flash('Pronto llegará gente interesada en tu trade ;)')
+        return redirect(url_for('public.exchange_form'))
     return render_template("public/post_exchange.html", form=form)
 
 @public_bp.route("/exchange/me-interesa/<exchange_id>/<user_id>", methods=['GET', 'POST'])
@@ -122,6 +124,7 @@ def not_interested_exchange(user_id, exchange_id):
     exchange.save()
     return redirect(url_for('public.show_exchange'))
 
+# Jsonify
 @public_bp.route("/list_interested/<exchangeId>/")
 def list_interested(exchangeId):
     exchanges = PhotocardExchange.get_all()

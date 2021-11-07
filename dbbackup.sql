@@ -10,6 +10,5 @@ insert into members(id,name) values('4','Handong');
 insert into members(id,name) values('5','Yoohyeon');
 insert into members(id,name) values('6','Dami');
 insert into members(id,name) values('7','Gahyeon');
-insert into blog_user(id,created,username,name,lastname,email,city_id,phone,birthday,is_admin,is_staff,confirm,password) values('1','2021-10-27 17:55:21.738681','dongnutla','Luis Alfredo','Hernández Duarte','luahernandezdu@unal.edu.co','1','3172544292','1995-06-22','true','true','true','pbkdf2:sha256:260000$4Gx9qEoObCn9mc6m$dea4aa1cb656fe80c0b086ce459cd6ee5f6643c5c9fdab6b99c99b4617de9529');
-insert into user_bias(user_id,bias_id) values('1','4');
-insert into user_bias(user_id,bias_id) values('1','5'); 
+UPDATE blog_user SET is_admin=True WHERE username='DongnutLa';
+UPDATE blog_user SET is_staff=True WHERE username='DongnutLa';

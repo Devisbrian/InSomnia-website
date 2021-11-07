@@ -1,7 +1,7 @@
 import logging
-from flask import render_template, redirect, url_for, abort, current_app, jsonify
+from flask import render_template, redirect, url_for, abort, current_app, jsonify, flash
 from flask_login import login_required
-from app.auth.decorators import staff_required
+from app.auth.decorators import admin_required, staff_required
 
 import os
 from werkzeug.utils import secure_filename
@@ -37,7 +37,8 @@ def album_add():
         albumdb.album_image_name = album_image_name
         albumdb.save()
         logger.info(f'Guardando nuevo album {album}')
-        return redirect(url_for('admin.index'))
+        flash('¡Yujuuu, agregaste el álbum ' + album + '!')
+        return redirect(url_for('public.list_albums'))
     return render_template("dreamcatcher/album_form.html", form=form)
 
 @dreamcatcher_bp.route("/admin/album/<int:album_id>", methods=['GET', 'POST'])
@@ -65,6 +66,7 @@ def update_album_form(album_id):
             album.file.save(file_path)
         album.save()
         logger.info(f'Guardando el álbum {album_id}')
+        flash('¡Has editado el álbum ' + album.album + '!')
         return redirect(url_for('public.list_albums'))
     return render_template("dreamcatcher/album_form.html", album=album, form=form)
 
@@ -76,11 +78,12 @@ def delete_album(album_id):
     album = Album.get_by_id(album_id)
     if album is None:
         logger.info(f'El album {album_id} no existe')
+        flash('¡Oops, parece que ese álbum ya no existe!')
         abort(404)
     album.delete()
     logger.info(f'El album {album_id} ha sido eliminado')
+    flash('¡El álbum ' + album.album + ' ha sido borrado!')
     return redirect(url_for('public.list_albums'))
-
 
 @dreamcatcher_bp.route("/admin/album-type-database", methods=['GET', 'POST'])
 @login_required
@@ -96,6 +99,7 @@ def albumtype_add():
         albumtype = AlbumType(album=albumDb, pc_type=pc_type)
         albumtype.save()
         logger.info(f'Guardando nueva categoria de photocard')
+        flash('¡Yeiii, has creado la nueva categoría de photocard ' + pc_type + ' para el álbum ' + album + '!')
         return redirect(url_for('dreamcatcher.albumtype_add'))
     return render_template("dreamcatcher/albumtype_form.html", form=form)
 
@@ -114,6 +118,7 @@ def update_albumtype_form(album_type_id):
     album_type = AlbumType.get_by_id(album_type_id)
     if album_type is None:
         logger.info(f'La categoría de photocard no existe')
+        flash('¡Oops, parece que esa categoría de photocard no existe!')
         abort(404)
     form = AlbumTypeForm(obj=album_type)
     form.album.choices = [(albums.album, albums.album) for albums in Album.get_all()]
@@ -121,10 +126,10 @@ def update_albumtype_form(album_type_id):
     if form.validate_on_submit():
         album = form.album.data
         album_type.pc_type = form.pc_type.data
-
         albumDb = Album.get_by_album(album)
         album_type.album = albumDb
         album_type.save()
+        flash('¡Has editado la categoría ' + album_type.pc_type + ' del álbum ' + album_type.album.album + '!')
         return redirect(url_for('dreamcatcher.list_albumtype'))
     return render_template("dreamcatcher/albumtype_form.html", album_type=album_type, form=form)
 
@@ -136,11 +141,12 @@ def delete_albumtype(album_type_id):
     pc_type = AlbumType.get_by_id(album_type_id)
     if pc_type is None:
         logger.info(f'La categoria {album_type_id} no existe')
+        flash('¡Oops, parece que esa categoría de photocard no existe!')
         abort(404)
     pc_type.delete()
     logger.info(f'La categoria {album_type_id} ha sido eliminada')
+    flash('La categoría de photocard ' + pc_type.pc_type + ' ha sido borrada!')
     return redirect(url_for('dreamcatcher.list_albumtype'))
-
 
 @dreamcatcher_bp.route("/admin/photocard", methods=['GET', 'POST'])
 @login_required
@@ -175,6 +181,7 @@ def photocarddb_add():
         pc_db.pc_image_name = pc_image_name
         pc_db.save()
         logger.info(f'Guardando nueva photocard {pc_name}')
+        flash('¡Yujuuu, has creado la nueva photocard ' + pc_name + '!')
         return redirect(url_for('public.list_photocards'))
     return render_template("dreamcatcher/photocarddb_form.html", form=form)
 
@@ -185,6 +192,7 @@ def update_photocard_form(pc_id):
     photocard = PhotocardDb.get_by_id(pc_id)
     if photocard is None:
         logger.info(f'La photocard no existe')
+        flash('¡Oops, parece que esa photocard no existe!')
         abort(404)
     form = PhotocardDbForm(obj=photocard)
     form.album.choices = [(albums.album, albums.album) for albums in Album.get_all()]
@@ -217,6 +225,7 @@ def update_photocard_form(pc_id):
             photocard.file.save(file_path)
         photocard.save()
         logger.info(f'Guardando la photocard {pc_id}')
+        flash('¡Has editado la photocard ' + photocard.pc_name + '!')
         return redirect(url_for('public.list_photocards'))
     return render_template("dreamcatcher/photocarddb_form.html", photocard=photocard, form=form)
 
@@ -224,16 +233,20 @@ def update_photocard_form(pc_id):
 @login_required
 @staff_required
 def delete_photocard(photocard_id):
-    logger.info(f'Se va a eliminar la categoria {photocard_id}')
+    logger.info(f'Se va a eliminar la photocard {photocard_id}')
     photocard = PhotocardDb.get_by_id(photocard_id)
     if photocard is None:
-        logger.info(f'La categoria {album_type_id} no existe')
+        logger.info(f'La photocard {photocard_id} no existe')
+        flash('Oops, parece que esa photocard no existe!')
         abort(404)
     photocard.delete()
     logger.info(f'La photocard {photocard_id} ha sido eliminada')
+    flash('¡La photocard ' + photocard.pc_name + ' ha sido borrada!')
     return redirect(url_for('public.list_photocards'))
 
 @dreamcatcher_bp.route("/admin/dcmembers/", methods=['POST', 'GET'])
+@login_required
+@admin_required
 def dc_members():
     form = MemberDcForm()
     if form.validate_on_submit():
