@@ -8,6 +8,13 @@ settings_module = os.getenv('APP_SETTINGS_MODULE')
 app = create_app(settings_module)
 
 
+@app.route('/media/users/<filename>')
+def media_users(filename):
+    dir_path = os.path.join(
+        app.config['MEDIA_DIR'],
+        app.config['USER_PIC_DIR'])
+    return send_from_directory(dir_path, filename)
+
 @app.route('/media/posts/<filename>')
 def media_posts(filename):
     dir_path = os.path.join(

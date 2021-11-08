@@ -78,6 +78,9 @@
           </li>
           {% endif %}
           <li>
+              <a href="{{ url_for('profile.index', username=current_user.username) }}">Mi perfil</a>
+          </li>
+          <li>
               <a href="{{ url_for('store.cart_view') }}">Mis compras</a>
           </li>
           <li>

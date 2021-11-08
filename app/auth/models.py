@@ -37,6 +37,7 @@ class User(db.Model, UserMixin):
     is_staff = db.Column(db.Boolean, default=False)
     confirm = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(128), nullable=False)
+    profile_pic_name = db.Column(db.String)
     exchange = db.relationship('PhotocardExchange', backref=db.backref('user', lazy=True))
     exchange_interested = db.relationship('PhotocardExchange', secondary=user_exchange_interest, backref=db.backref('users_interested', lazy='dynamic'))
     albums = db.relationship('Album', secondary=user_albums, backref=db.backref('users_own', lazy='dynamic'))

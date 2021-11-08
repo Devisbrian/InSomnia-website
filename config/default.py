@@ -5,6 +5,7 @@ BASE_DIR = dirname(dirname(abspath(__file__)))
 
 # Media dir
 MEDIA_DIR = join(BASE_DIR, 'media')
+USER_PIC_DIR = join(MEDIA_DIR, 'users')
 POSTS_IMAGES_DIR = join(MEDIA_DIR, 'posts')
 PCS_IMAGES_DIR = join(MEDIA_DIR, 'photocards')
 ALBUMS_IMAGES_DIR = join(MEDIA_DIR, 'albums')
