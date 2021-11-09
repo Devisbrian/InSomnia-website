@@ -76,11 +76,11 @@
               </div>
               <div>
                 <label for="city"><b>Ciudad</b></label>
-                <select id="city" name="city" required=""></select>
+                <select id="Authcity" name="city" required=""></select>
               </div>
               <div>
                 <label for="bias"><b>Bias</b></label>
-                <select id="bias" multiple name="bias" required=""></select>
+                <select id="Authbias" multiple name="bias" required=""></select>
               </div>
               
           </div>
@@ -101,8 +101,8 @@
 </div>
 
 <script>
-  let bias_select = document.getElementById('bias');
-  let city_select = document.getElementById('city');
+  let bias_select = document.getElementById('Authbias');
+  let city_select = document.getElementById('Authcity');
 
   fetch('/member/').then(function(response) {
       response.json().then(function(data) {

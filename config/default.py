@@ -29,10 +29,10 @@ APP_ENV = ''
 # Configuración del email
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_PORT = 587
-MAIL_USERNAME = 'luisthered09@gmail.com'
-MAIL_PASSWORD = 'xqlxatksgzuepxnx'
-DONT_REPLY_FROM_EMAIL = '(Lusho, luisthered09@gmail.com)'
-ADMINS = ('luisthered09@gmail.com', 'luahernandezdu@unal.edu.co' )
+MAIL_USERNAME = 'dreamcatchercol@gmail.com'
+MAIL_PASSWORD = 'gsvqevuhdkkucvhl' #luisthered09'xqlxatksgzuepxnx' 
+DONT_REPLY_FROM_EMAIL = '(DreamcatcherColombia, dreamcatchercol@gmail.com)'
+ADMINS = ('dreamcatchercol@gmail.com', 'luahernandezdu@unal.edu.co' )
 MAIL_USE_TLS = True
 MAIL_DEBUG = False
 

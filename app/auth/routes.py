@@ -77,23 +77,18 @@ def show_signup_form():
             flash('Yujuuu, ¡Welcome to the Dream World, ' + username + '!')
             flash('¡Revisa tu correo electrónico! ;)')
             return redirect(next_page)
-    return None
-    #return render_template('auth/signup_form.html', form=form)
+    return redirect(url_for('public.index'))
 
 
 @auth_bp.route('/login', methods=['GET', 'POST'])
 def login():
     if current_user.is_authenticated:
         return redirect(url_for('public.index'))
-    #form = LoginForm()
     if request.method == 'POST':
         user = request.form.get('uname')
         user = User.get_by_username(user)
         psw = request.form.get('psw')
         remember_me = request.form.get('remember')
-    #if form.validate_on_submit():
-        #user = User.get_by_username(form.username.data)
-        #if user is not None and user.check_password(form.password.data):
         if user is not None and user.check_password(psw):
             login_user(user, remember=remember_me)
             next_page = request.args.get('next')

@@ -38,6 +38,9 @@ class User(db.Model, UserMixin):
     confirm = db.Column(db.Boolean, default=False)
     password = db.Column(db.String(128), nullable=False)
     profile_pic_name = db.Column(db.String)
+    facebook = db.Column(db.String(80))
+    twitter = db.Column(db.String(80))
+    instagram = db.Column(db.String(80))
     exchange = db.relationship('PhotocardExchange', backref=db.backref('user', lazy=True))
     exchange_interested = db.relationship('PhotocardExchange', secondary=user_exchange_interest, backref=db.backref('users_interested', lazy='dynamic'))
     albums = db.relationship('Album', secondary=user_albums, backref=db.backref('users_own', lazy='dynamic'))
@@ -76,7 +79,7 @@ class User(db.Model, UserMixin):
     
     @staticmethod
     def get_by_username(username):
-        return User.query.filter(User.username.ilike("%"+username+"%")).first()
+        return User.query.filter_by(username=username).first()
 
 class Cities(db.Model):
     

@@ -32,9 +32,11 @@
         {% with messages = get_flashed_messages() %}
         {% if messages %}
           <div id="flashes" class="flash-container">
-            {% for message in messages %}
-            <h4>{{ message }}</h4>
-            {% endfor %}
+            <div class="flashes-messages">
+              {% for message in messages %}
+              <h4>{{ message }}</h4>
+              {% endfor %}
+            </div>
               <span onclick="document.getElementById('flashes').style.display='none'" class="close" title="Ok">&times;</span>
           </div>
         {% endif %}

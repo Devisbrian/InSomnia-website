@@ -200,6 +200,7 @@
 
 /* modal */
 
+
 .pc-modal-content,
 .album-modal-content,
 .pic-modal-content {
@@ -214,11 +215,34 @@
     padding: 10px;
     width: 30%;
 }
+.user-modal-container {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    align-items: center;
+    z-index: 1; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+}
+
+.user-modal-content {
+    margin: 5% auto 15% auto;
+    background-color: rgba(0,0,0,0.9);
+    border: 1px solid #888;
+    transition-duration: 0.4s;
+    padding: 10px;
+    width: 60%;
+}
 
 .album-modal-content select {
     width: 100% !important;
 }
 
+.user-modal-content span.close,
 .pc-modal-content span.close,
 .album-modal-content span.close,
 .pic-modal-content span.close {
@@ -230,6 +254,8 @@
     font-weight: bold;
 }
 
+.user-modal-content span.close:hover,
+.user-modal-content span.close:focus,
 .pc-modal-content span.close:hover,
 .pc-modal-content span.close:focus,
 .album-modal-content span.close:hover,
@@ -260,6 +286,9 @@
 }
 
 @media (max-width: 790px) {
+    .user-modal-content {
+        width: 98%;
+    }
     .profile-container {
         width: 90%;
     }
@@ -289,6 +318,9 @@
 }
 
 @media (max-width:570px) {
+    .user-modal-content {
+        width: 98%;
+    }
     .album-modal-content,
     .pic-modal-content {
         width:60%;
