@@ -8,6 +8,7 @@ from app.models import Post, Comment
 from app.dreamcatcher.models import PhotocardDb, PhotocardExchange, Album, AlbumType, Members
 from app.auth.models import User
 from app.auth.decorators import email_confirm_required
+from app.common.mail import send_email
 from . import public_bp
 
 logger = logging.getLogger(__name__)
@@ -105,7 +106,7 @@ def exchange_form():
         logger.info(f'Guardando nueva entrada photocardExchange')
         flash('¡Yujuuu, has creado un nuevo trade!')
         flash('Pronto llegará gente interesada en tu trade ;)')
-        return redirect(url_for('public.exchange_form'))
+        return redirect(url_for('public.show_exchange'))
     return render_template("public/post_exchange.html", form=form)
 
 @public_bp.route("/exchange/me-interesa/<exchange_id>/<user_id>", methods=['GET', 'POST'])
@@ -123,6 +124,44 @@ def not_interested_exchange(user_id, exchange_id):
     exchange.users_interested.remove(user)
     exchange.save()
     return redirect(url_for('public.show_exchange'))
+
+@public_bp.route("/exchange/delete/<int:exchange_id>", methods=['GET', 'POST'])
+def delete_exchange(exchange_id):
+    exchange = PhotocardExchange.get_by_id(exchange_id)
+    if exchange.user_id != current_user.id:
+        abort(403)
+    else:
+        exchange.delete()
+        flash('¡Ohh, tu trade ha sido borrado!')
+    return redirect(url_for('public.show_exchange'))
+
+@public_bp.route("/contact_us/", methods=['POST'])
+def contact_us():
+    if request.method == 'POST':
+        name = request.form.get('nombre')
+        email = request.form.get('email')
+        subject = request.form.get('asunto')
+        message = request.form.get('mensaje')
+
+        print('correo: ', email)
+        print('nombre: ', name)
+        print('asunto: ', subject)
+        print('mensaje: ', message)
+
+        send_email(subject = 'Contacto Insomnia Colombia',
+            sender=current_app.config['DONT_REPLY_FROM_EMAIL'],
+            recipients=[email, ],
+            text_body=f'Hola {name}, recibimos tu mensaje.',
+            html_body=f'<p>Hola {name}, recibimos tu mensaje.</p><p>A continuación verás una copia de tu mensaje:</p><br><hr><br>   <h4>Nombre: {name}</h4> <h4>Correo: {email}</h4> <h4>Asunto: {subject}</h4> <h4>Mensaje:</h4> <p>{message}</p>')
+
+        send_email(subject = 'Contact Us Form',
+                sender=current_app.config['DONT_REPLY_FROM_EMAIL'],
+                recipients=[current_app.config['MAIL_USERNAME'], ],
+                text_body=f'{name} envió un mensaje.',
+                html_body=f'<p>¡Ha llegado un nuevo mensaje desde el formulario de contacto!</p><br><hr><br><h4>Nombre: {name}</h4> <h4>Correo: {email}</h4> <h4>Asunto: {subject}</h4> <h4>Mensaje:</h4> <p>{message}</p>')
+        flash('¡Listo, hemos recibido tu mensaje!')
+        flash('A ' + str(email) + ' llegará un mensaje de confirmación de tu mensaje')
+    return redirect(url_for('public.index'))
 
 # Jsonify
 @public_bp.route("/list_interested/<exchangeId>/")

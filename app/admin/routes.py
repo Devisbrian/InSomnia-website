@@ -32,14 +32,15 @@ def post_form():
         content = form.content.data
         file = form.post_image.data
         image_name = None
-        # Comprueba si la petición contiene la parte del fichero
+        post = Post(user_id=current_user.id, title=title, description=description, content=content)
+        post.save()
         if file:
-            image_name = secure_filename(file.filename)
+            image_name = 'post-' + str(post.id) + '-'
+            image_name += secure_filename(file.filename)
             images_dir = current_app.config['POSTS_IMAGES_DIR']
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, image_name)
             file.save(file_path)
-        post = Post(user_id=current_user.id, title=title, description=description, content=content)
         post.image_name = image_name
         post.save()
         logger.info(f'Guardando nuevo post {title}')
@@ -52,28 +53,25 @@ def post_form():
 @login_required
 @staff_required
 def update_post_form(post_id):
-    # Actualiza un post existente
     post = Post.get_by_id(post_id)
     if post is None:
         logger.info(f'El post {post_id} no existe')
+        flash('¡Oops, parece que este post no existe!')
         abort(404)
-    # Crea un formulario inicializando los campos con
-    # los valores del post.
     form = PostForm(obj=post)
     if form.validate_on_submit():
-        # Actualiza los campos del post existente
         post.title = form.title.data
         post.description = form.description.data
         post.content = form.content.data
         post.file = form.post_image.data
-
         if post.file:
             old_image_name = post.image_name
             images_dir = current_app.config['POSTS_IMAGES_DIR']
             old_file_path = os.path.join(images_dir, old_image_name)
             os.remove(old_file_path)
 
-            post.image_name = secure_filename(post.file.filename)
+            post.image_name = 'post-' + str(post.id) + '-'
+            post.image_name += secure_filename(post.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, post.image_name)
             post.file.save(file_path)

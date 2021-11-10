@@ -27,13 +27,15 @@ def album_add():
         youtube = form.youtube.data
         file = form.album_image.data
         album_image_name = None
+        albumdb = Album(album=album, date=date, songs=songs, producers=producers, spotify=spotify, youtube=youtube)
+        albumdb.save()
         if file:
-            album_image_name = secure_filename(file.filename)
+            album_image_name = 'album-' + str(album.id) + '-'
+            album_image_name += secure_filename(file.filename)
             images_dir = current_app.config['ALBUMS_IMAGES_DIR']
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, album_image_name)
             file.save(file_path)
-        albumdb = Album(album=album, date=date, songs=songs, producers=producers, spotify=spotify, youtube=youtube)
         albumdb.album_image_name = album_image_name
         albumdb.save()
         logger.info(f'Guardando nuevo album {album}')
@@ -65,7 +67,8 @@ def update_album_form(album_id):
             old_file_path = os.path.join(images_dir, old_file_name)
             os.remove(old_file_path)
 
-            album.album_image_name = secure_filename(album.file.filename)
+            album.album_image_name = 'album-' + str(album.id) + '-'
+            album.album_image_name += secure_filename(album.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, album.album_image_name)
             album.file.save(file_path)
@@ -177,18 +180,18 @@ def photocarddb_add():
         pc_name = form.pc_name.data
         file = form.photocard_image.data
         pc_image_name = None
-
         albumDb = Album.get_by_album(album)
         memberDb = Members.get_by_name(member)
         pc_typeDb = AlbumType.get_by_type(pc_type)
-        
+        pc_db = PhotocardDb(album=albumDb, member=memberDb, pc_type=pc_typeDb, pc_name=pc_name)
+        pc_db.save()
         if file:
-            pc_image_name = secure_filename(file.filename)
+            pc_image_name = 'pc-' + str(pc_db.id) + '-'
+            pc_image_name += secure_filename(file.filename)
             images_dir = current_app.config['PCS_IMAGES_DIR']
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, pc_image_name)
             file.save(file_path)
-        pc_db = PhotocardDb(album=albumDb, member=memberDb, pc_type=pc_typeDb, pc_name=pc_name)
         pc_db.pc_image_name = pc_image_name
         pc_db.save()
         logger.info(f'Guardando nueva photocard {pc_name}')
@@ -234,7 +237,8 @@ def update_photocard_form(pc_id):
             old_file_path = os.path.join(images_dir, old_file_name)
             os.remove(old_file_path)
 
-            photocard.pc_image_name = secure_filename(photocard.file.filename)
+            photocard.pc_image_name = 'pc-' + str(photocard.id) + '-'
+            photocard.pc_image_name += secure_filename(photocard.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, photocard.pc_image_name)
             photocard.file.save(file_path)

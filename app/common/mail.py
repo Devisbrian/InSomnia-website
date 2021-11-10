@@ -36,5 +36,5 @@ def mail_verification(email, username):
                 sender=current_app.config['DONT_REPLY_FROM_EMAIL'],
                 recipients=[email, ],
                 text_body=f'Hola {username}, ahora eres parte de InSomnia Colombia.',
-                html_body=f'<p>Hola <strong>{username}</strong>, ahora eres parte de InSomnia Colombia</p><br>Confirma tu Email a través del siguiente link: {link} <br> *Este link expirará en 24 horas')
+                html_body=f'<p>Hola <strong>{username}</strong>, ahora eres parte de InSomnia Colombia</p><br><p>Confirma tu Email a través del siguiente link: {link}</p> <br> *Este link expirará en 24 horas')
     

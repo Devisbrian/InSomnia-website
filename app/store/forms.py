@@ -11,7 +11,7 @@ class ProductForm(FlaskForm):
     price = FloatField('Precio de venta', validators=[DataRequired()])
     stock = IntegerField('Stock', validators=[DataRequired()])
     image = FileField('Imagen del producto', validators=[
-        FileAllowed(['jpg', 'png', 'jpeg'], 'Sólo se permiten imágenes'), DataRequired()
+        FileAllowed(['jpg', 'png', 'jpeg'], 'Sólo se permiten imágenes')
     ])
     description = TextField('Descripción del producto', validators=[DataRequired()])
     fanmade = BooleanField('¿Fanmade?')

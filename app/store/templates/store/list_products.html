@@ -39,6 +39,8 @@
                         </div>
                     </form>
                 </div>
+                <div class="btn1"><a href="{{ url_for('store.update_product', product_id=product.id) }}"><button class="product-btn-1">Editar</button></a></div>
+                <div class="btbtn2nDelete"><a href="{{ url_for('store.delete_product', product_id=product.id) }}"><button class="product-btn-1">Borrar</button></a></div>
             </div>
         </div>
     </div>

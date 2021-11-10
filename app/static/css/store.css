@@ -28,6 +28,10 @@
     border-radius: 10px;
 }
 
+.product-btn-grid .btnDelete button {
+    justify-self: start;
+}
+
 .product-btn-grid button {
     font-size: 15px;
     justify-self: center;

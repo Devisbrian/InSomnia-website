@@ -23,27 +23,26 @@ def add_fc_photos():
         date = form.date.data
         event_file = form.event_image.data
         gallery_files = form.gallery_images.data
-
+        event = Events(name=name, date=date)
+        event.save()
         if event_file:
-            image_name = secure_filename(event_file.filename)
+            image_name = 'evento-' + str(event.id) + '-'
+            image_name += secure_filename(event_file.filename)
             images_dir = current_app.config['EVENTS_DIR']
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, image_name)
             event_file.save(file_path)
-        event = Events(name=name, date=date)
         event.image_name = image_name
         event.save()
-
-        eventDb = Events.get_by_name(name)
-        
         images_dir = current_app.config['EVENTS_DIR']
         for file in gallery_files:
             if file:
-                image_name = secure_filename(file.filename)
+                image_name = 'evento-' + str(event.id) + '-gallery-'
+                image_name += secure_filename(file.filename)
                 os.makedirs(images_dir, exist_ok=True)
                 file_path = os.path.join(images_dir, image_name)
                 file.save(file_path)
-                gallery = Gallery(image_name=image_name, event=eventDb)
+                gallery = Gallery(image_name=image_name, event=event)
                 gallery.save()
         flash('¡Yujuuu, has agregado el evento ' + name + ' a la galería!')
         return redirect(url_for('fanclub.list_gallery'))
@@ -64,28 +63,27 @@ def edit_fc_photos(event_id):
         event.date = form.date.data
         event.file = form.event_image.data
         gallery_files = form.gallery_images.data
-
         if event.file:
             old_image_name = event.image_name
             images_dir = current_app.config['EVENTS_DIR']
             old_file_path = os.path.join(images_dir, old_image_name)
             os.remove(old_file_path)
 
-            event.image_name = secure_filename(event.file.filename)
+            event.image_name = 'evento-' + str(event.id) + '-'
+            event.image_name += secure_filename(event.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, event.image_name)
             event.file.save(file_path)
         event.save()
-
-        eventDb = Events.get_by_name(event.name)
         if gallery_files:
             images_dir = current_app.config['EVENTS_DIR']
             for file in gallery_files:
-                image_name = secure_filename(file.filename)
+                image_name = 'evento-' + str(event.id) + '-gallery-'
+                image_name += secure_filename(file.filename)
                 os.makedirs(images_dir, exist_ok=True)
                 file_path = os.path.join(images_dir, image_name)
                 file.save(file_path)
-                gallery = Gallery(image_name=image_name, event=eventDb)
+                gallery = Gallery(image_name=image_name, event=event)
                 gallery.save()
         flash('¡Has editado el evento ' + event.name + '!')
         return redirect(url_for('fanclub.list_gallery'))

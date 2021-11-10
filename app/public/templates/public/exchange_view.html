@@ -71,6 +71,7 @@
                     {% endif %}
                 {% else %}
                     <a href="#" onclick="interestedFunction('{{ exchange.id }}')">Ver interesados</a>
+                    <a href="{{ url_for('public.delete_exchange', exchange_id=exchange.id) }}">Eliminar</a>
                 {% endif %}
                     <p>{{ exchange.created|datetime }}</p>
             </div>

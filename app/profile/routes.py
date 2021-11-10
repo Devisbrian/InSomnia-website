@@ -62,7 +62,8 @@ def pic_upload():
                 old_image_name = user.profile_pic_name
                 old_file_path = os.path.join(images_dir, old_image_name)
                 os.remove(old_file_path)
-            pic_name = secure_filename(file.filename)
+            pic_name = 'user-' + str(user_id) + '-'
+            pic_name += secure_filename(file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, pic_name)
             file.save(file_path)
