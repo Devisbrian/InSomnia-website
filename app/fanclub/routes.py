@@ -66,8 +66,12 @@ def edit_fc_photos(event_id):
         gallery_files = form.gallery_images.data
 
         if event.file:
-            event.image_name = secure_filename(event.file.filename)
+            old_image_name = event.image_name
             images_dir = current_app.config['EVENTS_DIR']
+            old_file_path = os.path.join(images_dir, old_image_name)
+            os.remove(old_file_path)
+
+            event.image_name = secure_filename(event.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, event.image_name)
             event.file.save(file_path)
@@ -96,6 +100,16 @@ def delete_fc_event(event_id):
         logger.info(f'El evento {event_id} no existe')
         flash('¡Oops, parece que ese evento ya no existe')
         abort(404)
+    image_name = event.image_name
+    images_dir = current_app.config['EVENTS_DIR']
+    file_path = os.path.join(images_dir, image_name)
+    os.remove(file_path)
+
+    for photo in event.photos:
+        gallery_image_name = photo.image_name
+        gallery_file_path = os.path.join(images_dir, gallery_image_name)
+        os.remove(gallery_file_path)
+
     event.delete()
     flash('¡El evento ' + event.name + ' ha sido borrado!')
     return redirect(url_for('fanclub.list_gallery'))
@@ -109,6 +123,10 @@ def delete_fc_photo(photo_id):
         logger.info(f'La foto {photo_id} no existe')
         flash('¡Oops, parece que esa foto ya no existe!')
         abort(404)
+    image_name = gallery.image_name
+    images_dir = current_app.config['EVENTS_DIR']
+    file_path = os.path.join(images_dir, image_name)
+    os.remove(file_path)
     gallery.delete()
     flash('¡La foto seleccionada ha sido borrada!')
     return redirect(url_for('fanclub.list_gallery'))

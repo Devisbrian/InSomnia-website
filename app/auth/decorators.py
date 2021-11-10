@@ -29,6 +29,7 @@ def email_confirm_required(f):
         confirm = getattr(current_user, 'confirm', False)
         if not confirm:
             flash('¡Oops, para esto debes haber confirmado tu correo electrónico!')
+            flash('Entra a tu perfil y verifícalo')
             return redirect(url_for('public.index'))
         return f(*args, **kws)
     return decorated_function

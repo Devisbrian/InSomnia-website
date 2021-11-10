@@ -57,7 +57,7 @@
             <a class="nav-exchange" href="{{ url_for('public.show_exchange') }}">Intercambio</a>
           </li>
           <li>
-              <a class="user-btn" href="#{{ current_user.username }}">{{ current_user.username }}</a>
+              <a class="user-btn" href="#{{ current_user.username }}"> {{ current_user.username }}</a>
           </li>
           <script>
             document.querySelector('.user-btn').addEventListener('click', () => {

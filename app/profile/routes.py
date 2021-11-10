@@ -5,6 +5,7 @@ import logging
 from app.auth.models import User, Cities
 from .forms import AddProfilePic, AddAlbums, AddPhotocards, EditPersonalInfo
 from app.dreamcatcher.models import Album, Members, PhotocardDb, AlbumType
+from app.common.mail import mail_verification
 
 import os
 from werkzeug.utils import secure_filename
@@ -19,7 +20,7 @@ logger = logging.getLogger(__name__)
 def index(username):
     user = User.get_by_username(username)
     if current_user.id != user.id:
-        flash('¡Oops, no tienes permisos para ver el perfil de otra persona!')
+        flash('¡Oops, nadie puede ver el perfil de otro usuario!.. Por ahora ;)')
         return redirect(url_for('public.index'))
     
     albums = [(albums.album, albums.album) for albums in Album.get_all()]
@@ -45,7 +46,6 @@ def index(username):
     infoForm.bias.choices.insert(0, ("", "Seleccione"))
     infoForm.city.choices = cities
     infoForm.city.choices.insert(0, ("", "Seleccione"))
-
     return render_template('profile/index.html', user=user, form=form, albumForm=albumForm, pcForm=pcForm, infoForm=infoForm)
 
 @profile_bp.route('/profile/pic_upload/', methods=['GET', 'POST'])
@@ -57,8 +57,12 @@ def pic_upload():
         file = form.profile_pic.data
         pic_name = None
         if file:
-            pic_name = secure_filename(file.filename)
             images_dir = current_app.config['USER_PIC_DIR']
+            if user.profile_pic_name:
+                old_image_name = user.profile_pic_name
+                old_file_path = os.path.join(images_dir, old_image_name)
+                os.remove(old_file_path)
+            pic_name = secure_filename(file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, pic_name)
             file.save(file_path)
@@ -91,11 +95,14 @@ def add_pc():
         membersData = request.form.getlist('members')
         album = Album.get_by_album(albumData)
         album_type = AlbumType.get_by_type(album_typeData)
+
         for memberData in membersData:
             member = Members.get_by_name(memberData)
             pc_for_user = PhotocardDb.get_filtered(album.id, album_type.id, member.id)
+            print(pc_for_user)
             user.photocards.append(pc_for_user)
         user.save()
+        flash('¡Yujuuu!, has agregado photocards')
     return redirect(url_for('profile.index', username=current_user.username))
 
 @profile_bp.route('/profile/update_info/', methods=['GET', 'POST'])
@@ -128,4 +135,13 @@ def update_info():
             bias_for_user = Members.get_by_id(int(biases))
             user.bias.append(bias_for_user)
         user.save()
+        flash('¡Super, acabas de actualizar tu información personal!')
     return redirect(url_for('profile.index', username=current_user.username))
+
+@profile_bp.route('/email-confirm/')
+def email_confirm():
+    email = current_user.email
+    username = current_user.username
+    mail_verification(email=email, username=username)
+    flash('¡Revisa tu correo electrónico, recibirás un enlace para verificarlo ;)!')
+    return redirect(url_for('profile.index', username=username))

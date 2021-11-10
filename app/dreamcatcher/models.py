@@ -167,6 +167,10 @@ class PhotocardDb(db.Model):
     @staticmethod
     def get_type():
         return PhotocardDb.query.distinct(PhotocardDb.pc_type_id)
+
+    @staticmethod
+    def get_by_album_type(album_id, pc_type_id):
+        return PhotocardDb.query.filter_by(album_id=album_id).filter_by(pc_type_id=pc_type_id).all()
     
     @staticmethod
     def get_filtered(album_id, pc_type_id, member_id):

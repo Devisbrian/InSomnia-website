@@ -43,6 +43,10 @@ def delete_product(product_id):
     if product is None:
         flash('¡Oops, parece que ese producto ya no existe')
         abort(404)
+    image_name = product.image_name
+    images_dir = current_app.config['PRODUCTS_DIR']
+    file_path = os.path.join(images_dir, image_name)
+    os.remove(file_path)
     product.delete()
     flash('¡El producto ' + product.name + ' ha sido borrado!')
     return redirect(url_for('store.list_products'))

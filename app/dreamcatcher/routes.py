@@ -59,8 +59,13 @@ def update_album_form(album_id):
         album.youtube = form.youtube.data
         album.file = form.album_image.data
         if album.file:
-            album.album_image_name = secure_filename(album.file.filename)
+
+            old_file_name = album.album_image_name
             images_dir = current_app.config['ALBUMS_IMAGES_DIR']
+            old_file_path = os.path.join(images_dir, old_file_name)
+            os.remove(old_file_path)
+
+            album.album_image_name = secure_filename(album.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, album.album_image_name)
             album.file.save(file_path)
@@ -80,6 +85,12 @@ def delete_album(album_id):
         logger.info(f'El album {album_id} no existe')
         flash('¡Oops, parece que ese álbum ya no existe!')
         abort(404)
+    
+    file_name = album.album_image_name
+    images_dir = current_app.config['ALBUMS_IMAGES_DIR']
+    file_path = os.path.join(images_dir, file_name)
+    os.remove(file_path)
+
     album.delete()
     logger.info(f'El album {album_id} ha sido eliminado')
     flash('¡El álbum ' + album.album + ' ha sido borrado!')
@@ -218,8 +229,12 @@ def update_photocard_form(pc_id):
         photocard.pc_type = pc_typeDb
 
         if photocard.file:
-            photocard.pc_image_name = secure_filename(photocard.file.filename)
+            old_file_name = photocard.pc_image_name
             images_dir = current_app.config['PCS_IMAGES_DIR']
+            old_file_path = os.path.join(images_dir, old_file_name)
+            os.remove(old_file_path)
+
+            photocard.pc_image_name = secure_filename(photocard.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, photocard.pc_image_name)
             photocard.file.save(file_path)
@@ -239,6 +254,10 @@ def delete_photocard(photocard_id):
         logger.info(f'La photocard {photocard_id} no existe')
         flash('Oops, parece que esa photocard no existe!')
         abort(404)
+    old_file_name = photocard.pc_image_name
+    images_dir = current_app.config['PCS_IMAGES_DIR']
+    old_file_path = os.path.join(images_dir, old_file_name)
+    os.remove(old_file_path)
     photocard.delete()
     logger.info(f'La photocard {photocard_id} ha sido eliminada')
     flash('¡La photocard ' + photocard.pc_name + ' ha sido borrada!')

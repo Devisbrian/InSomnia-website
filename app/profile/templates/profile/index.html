@@ -52,9 +52,14 @@
             <div class="data-form"><p>{% for bias in user.bias %} {{ bias.name }} | {% endfor %}</p></div>
             <hr><hr>
 
-            <div class="data-button">
-                <a href="#" onclick="UpdateInfo()"><button class="edit">Editar Información</button></a>
-            </div>
+                <div class="data-button">
+                    <a href="#" onclick="UpdateInfo()"><button class="edit">Editar Información</button></a>
+                </div>
+                {% if not current_user.confirm %}
+                <div class="data-button">
+                    <a href="{{ url_for('profile.email_confirm') }}"><button class="edit">Verificar correo</button></a>
+                </div>
+                {% endif %}
     </div>
 
     <div class="backgrnd profile-networks">
@@ -70,7 +75,7 @@
             </div>
         </div>
         <div class="network-data">
-            /{{ user.facebook }}
+            /{% if user.facebook %} {{ user.facebook }} {% endif %}
         </div>
         <hr><hr>
 
@@ -81,7 +86,7 @@
             </div>
         </div>
         <div class="network-data">
-            @{{ user.twitter }}
+            @{% if user.twitter %} {{ user.twitter }} {% endif %}
         </div>
         <hr><hr>
 
@@ -92,7 +97,7 @@
             </div>
         </div>
         <div class="network-data">
-            @{{ user.instagram }}
+            @{% if user.instagram %} {{ user.instagram }} {% endif %}
         </div>        
         
     </div>

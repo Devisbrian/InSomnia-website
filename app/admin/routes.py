@@ -67,10 +67,13 @@ def update_post_form(post_id):
         post.content = form.content.data
         post.file = form.post_image.data
 
-        # Comprueba si la petición contiene la parte del fichero
         if post.file:
-            post.image_name = secure_filename(post.file.filename)
+            old_image_name = post.image_name
             images_dir = current_app.config['POSTS_IMAGES_DIR']
+            old_file_path = os.path.join(images_dir, old_image_name)
+            os.remove(old_file_path)
+
+            post.image_name = secure_filename(post.file.filename)
             os.makedirs(images_dir, exist_ok=True)
             file_path = os.path.join(images_dir, post.image_name)
             post.file.save(file_path)
@@ -90,6 +93,12 @@ def delete_post(post_id):
     if post is None:
         logger.info(f'El post {post_id} no existe')
         abort(404)
+
+    image_name = post.image_name
+    images_dir = current_app.config['POSTS_IMAGES_DIR']
+    file_path = os.path.join(images_dir, image_name)
+    os.remove(file_path)
+
     post.delete()
     logger.info(f'El post {post_id} ha sido eliminado')
     flash('¡El post ' + post.title + ' ha sido eliminado!')
