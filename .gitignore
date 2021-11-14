@@ -1,4 +1,4 @@
 instance
 media
 migrations
-gunicorn
+__pychache__
