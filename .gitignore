@@ -3,3 +3,13 @@ media
 migrations
 env
 instance
+app/__pycache__
+app/admin/__pycache__
+app/auth/__pycache__
+app/common/__pycache__
+app/dreamcatcher/__pycache__
+app/fanclub/__pycache__
+app/profile/__pycache__
+app/public/__pycache__
+app/store/__pycache__
+config/__pycache__
